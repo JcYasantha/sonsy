@@ -34,7 +34,6 @@ class StockController extends Controller
             'Quantity' => 'required|numeric|min:0',
             'SellingPrice' => 'required|numeric|min:0',
             'TotalBalance' => 'required|numeric|min:0',
-            'Active' => 'required|string|max:191'
         ]);
         return Stock::create([
             'Discount' => $request['Discount'],
@@ -45,7 +44,6 @@ class StockController extends Controller
             'Quantity' => $request['Quantity'],
             'SellingPrice' => $request['SellingPrice'],
             'TotalBalance' => $request['TotalBalance'],
-            'Active' => $request['Active'],
         ]);
     }
 
@@ -79,7 +77,6 @@ class StockController extends Controller
             'Quantity' => 'required|numeric|min:0',
             'SellingPrice' => 'required|numeric|min:0',
             'TotalBalance' => 'required|numeric|min:0',
-            'Active' => 'required|string|max:191'
         ]);
         $stocks->update($request->all());
     }

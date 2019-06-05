@@ -22,7 +22,6 @@
                   <th>Quantity</th>
                   <th>SellingPrice</th>
                   <th>TotalBalance</th>
-                  <th>Availability</th>
                   <th>Modify</th>
                 </tr>
                 <tr v-for="stock in stocks" :key="stock.ItemNo">
@@ -35,7 +34,6 @@
                   <td>{{stock.Quantity}}</td>
                   <td>{{stock.SellingPrice}}</td>
                   <td>{{stock.TotalBalance}}</td>
-                  <td>{{stock.Active}}</td>
                   <td>
                       <!--<router-link to="/editStock">Edit</router-link>-->
                       <a href="#" @click="editModal(stock)" data-toggle="modal" data-target="#editIt">Edit</a> <b>|</b>
@@ -118,13 +116,6 @@
                               class="form-control" :class="{ 'is-invalid': form.errors.has('TotalBalance') }">
                           <has-error :form="form" field="TotalBalance"></has-error>
                       </div>
-                      <div class="form-group col-md-12">
-                          <label>Item Availability</label>
-                          <input v-model="form.Active" type="text" name="Active"
-                              placeholder="Enter Active"
-                              class="form-control" :class="{ 'is-invalid': form.errors.has('Active') }">
-                          <has-error :form="form" field="Active"></has-error>
-                      </div>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -155,7 +146,7 @@
                     Quantity:'',
                     SellingPrice:'',
                     TotalBalance:'',
-                    Active:''
+
                 })
             }
         },

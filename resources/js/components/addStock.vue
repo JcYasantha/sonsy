@@ -130,13 +130,6 @@
                             class="form-control" :class="{ 'is-invalid': form.errors.has('TotalBalance') }">
                         <has-error :form="form" field="TotalBalance"></has-error>
                     </div>
-                    <div class="form-group col-md-12">
-                        <label>Item Availability</label>
-                        <input v-model="form.Active" type="text" name="Active"
-                            placeholder="Enter Active"
-                            class="form-control" :class="{ 'is-invalid': form.errors.has('Active') }">
-                        <has-error :form="form" field="Active"></has-error>
-                    </div> 
                 <button type="submit" class="btn btn-primary" id="addbtn">Add Item</button>
                 </div>
             </form>
@@ -157,7 +150,6 @@
                     Quantity:'',
                     SellingPrice:'',
                     TotalBalance:'',
-                    Active:''
                 })
             }
         },
@@ -182,9 +174,6 @@
                     Toast.fire({
                     type: 'success',
                     title: 'Item added successfully'
-                    })
-                    .catch(()=>{
-                    
                     })
                 })
             }
