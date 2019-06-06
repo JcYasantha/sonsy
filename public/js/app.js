@@ -2305,6 +2305,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2378,47 +2380,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
       stocks: {},
       customers: {},
       InvoiceNo: {},
-      invoice_products: [{
-        itemname: '',
-        quantity: '',
-        amount: '',
-        line_total: 0
-      }],
-      form: new Form({
-        newInvoiceNo: 0,
-        Outstanding: 0
-      })
-    };
+      invoice_products: {}
+    }, _defineProperty(_ref, "invoice_products", [{
+      itemname: [],
+      quantity: [],
+      amount: [],
+      line_total: 0
+    }]), _defineProperty(_ref, "form", new Form({
+      newInvoiceNo: 0,
+      Outstanding: 0
+    })), _ref;
   },
   methods: {
     loadStock: function loadStock() {
       var _this = this;
 
-      axios.get("api/stock").then(function (_ref) {
-        var data = _ref.data;
+      axios.get("api/stock").then(function (_ref2) {
+        var data = _ref2.data;
         return _this.stocks = data;
       });
     },
     loadCustomer: function loadCustomer() {
       var _this2 = this;
 
-      axios.get("api/customer").then(function (_ref2) {
-        var data = _ref2.data;
+      axios.get("api/customer").then(function (_ref3) {
+        var data = _ref3.data;
         return _this2.customers = data;
       });
     },
-    invoiceLastId: function invoiceLastId() {
-      var _this3 = this;
-
-      axios.get("api/invoiceget").then(function (_ref3) {
-        var data = _ref3.data;
-        return _this3.InvoiceNo = data;
-      });
-    },
+    //invoiceLastId(){
+    //    axios.get("api/invoiceget").then(({data}) => (this.InvoiceNo = data));
+    //},
     addNewRow: function addNewRow() {
       this.invoice_products.push({
         itemname: '',
@@ -2458,14 +2456,29 @@ __webpack_require__.r(__webpack_exports__);
       this.form.Outstanding = subtotal.toFixed(2);
     },
     saveInvoice: function saveInvoice() {
-      this.form.post('api/invoice');
-      this.form.post('api/outstanding');
+      var _this3 = this;
+
+      var data = {
+        invoice_products: this.invoice_products
+      };
+      this.form.post('api/invoice', data).then(function (res) {
+        _this3.printme();
+
+        console.log(data);
+      })["catch"](function (e) {
+        _this3.$Progress.fail();
+
+        console.log(e);
+      }); //this.form.post('api/invoice');
+      // this.form.post('api/outstanding');
+    },
+    printme: function printme() {
+      window.print();
     }
   },
   created: function created() {
     this.loadStock();
-    this.loadCustomer();
-    this.invoiceLastId();
+    this.loadCustomer(); //this.invoiceLastId();
   }
 });
 
@@ -43549,46 +43562,6 @@ var render = function() {
                     _c("br"),
                     _c("br"),
                     _c("br")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-lg-6 col-sm-6" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", [
-                        _vm._v(
-                          "Last Invoice #0" + _vm._s(_vm.InvoiceNo.InvoiceNo)
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.newInvoiceNo,
-                            expression: "form.newInvoiceNo"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: "number", min: "InvoiceNo.InvoiceNo+1" },
-                        domProps: { value: _vm.form.newInvoiceNo },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.form,
-                              "newInvoiceNo",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("br"),
-                    _c("br"),
-                    _c("br")
                   ])
                 ]),
                 _vm._v(" "),
@@ -43687,9 +43660,10 @@ var render = function() {
                                       "option",
                                       {
                                         key: stock.ItemNo,
+                                        attrs: { name: "itemname[]" },
                                         domProps: {
                                           value: {
-                                            id: stock.ItemNo,
+                                            id: stock.id,
                                             SellingPrice: stock.SellingPrice
                                           }
                                         }
@@ -43718,6 +43692,7 @@ var render = function() {
                                   min: "0",
                                   max: "invoice_product.itemname.Quantity",
                                   step: "1",
+                                  name: "quantity[]",
                                   value: "{invoice_product.itemname.qty}"
                                 },
                                 domProps: { value: invoice_product.quantity },
@@ -43798,7 +43773,8 @@ var render = function() {
                                   readonly: "",
                                   type: "number",
                                   min: "0",
-                                  step: ".01"
+                                  step: ".01",
+                                  name: "line_total[]"
                                 },
                                 domProps: { value: invoice_product.line_total },
                                 on: {

@@ -14,9 +14,10 @@ class CreateItemsTable extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->biginteger('InvoiceNo');
+            $table->integer('InvoiceNo');
             $table->string('Items');
             $table->integer('Quantity');
+            $table->double('Amount');
             $table->timestamps();
         });
     }

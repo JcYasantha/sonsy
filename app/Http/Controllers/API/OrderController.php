@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Stock;
 use App\Invoice;
 use App\Customer;
+use App\Item;
 use App\Outstanding_Payments;
 
 class OrderController extends Controller
@@ -30,11 +31,30 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-         return Invoice::create([
-             'InvoiceNo' => $request['newInvoiceNo'],
-            'CustomerID' => $request['CustomerID'],
-            'Outstanding'=> $request['Outstanding'],
-        ]);
+        $invoice_products = json_decode($request->getContent('data'), true);
+
+        $invoice = new Invoice;
+        $invoice-> CustomerID = $request -> CustomerID;
+        $invoice-> Outstanding= $request -> Outstanding;
+        $invoice->save();
+
+        $InvoiceNo = DB::getPdo()->lastInsertId();
+                
+        $outstanding = new Outstanding_Payments;
+        $outstanding -> InvoiceNo = $InvoiceNo;
+        $outstanding -> InvoiceValue = $request -> Outstanding;
+        $outstanding->save();
+
+        /* foreach ($invoice_products as $invoice_product) {
+
+            return Item::create([
+                'InvoiceNo' => $InvoiceNo,
+                'Items' => $invoice_product['itemname'],
+                'Quantity' => $invoice_product['quantity'],
+                'Amount' => $invoice_product['line_total'],
+            ]);
+       } */
+        
     }
 
     /**
