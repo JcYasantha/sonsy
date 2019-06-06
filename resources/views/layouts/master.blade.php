@@ -62,7 +62,9 @@
           <li class="nav-item">
             <router-link to="/addOrder" class="nav-link sideLink px-2"><i class="material-icons icon">add_circle</i><span class="text">Add Order</span></router-link>
           </li>
-
+          <li class="nav-item">
+            <router-link to="/addPeople" class="nav-link sideLink px-2"><i class="material-icons icon">add_circle</i><span class="text">Add People</span></router-link>
+          </li>
           <li class="nav-item">
             <router-link to="/test2" class="nav-link sideLink px-2"><i class="material-icons icon">settings</i><span class="text">Settings</span></router-link>
           </li>

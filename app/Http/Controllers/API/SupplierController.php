@@ -4,8 +4,8 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Customer;
-class customerController extends Controller
+use App\Supplier;
+class SupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class customerController extends Controller
      */
     public function index()
     {
-        return Customer::all();
+        //
     }
 
     /**
@@ -25,13 +25,13 @@ class customerController extends Controller
      */
     public function store(Request $request)
     {
-        return Customer::create([
-            'Fname' => $request['Fname'],
-            'Lname' => $request['Lname'],
+        return Supplier::create([
+            'Name' => $request['Name'],
+            'PhoneNO' => $request['PhoneNO'],
+            'Email' => $request['Email'],
             'No' => $request['No'],
-            'City' => $request['City'],
             'Street' => $request['Street'],
-            'NicNo' => $request['NicNo']
+            'City' => $request['City']
         ]);
     }
 
