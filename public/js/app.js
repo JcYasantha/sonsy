@@ -2455,8 +2455,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -2530,37 +2528,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    var _ref;
-
-    return _ref = {
+    return {
       stocks: {},
       customers: {},
       InvoiceNo: {},
-      invoice_products: {}
-    }, _defineProperty(_ref, "invoice_products", [{
-      itemname: [],
-      quantity: [],
-      amount: [],
-      line_total: 0
-    }]), _defineProperty(_ref, "form", new Form({
-      newInvoiceNo: 0,
-      Outstanding: 0
-    })), _ref;
+      invoice_products: [{
+        itemname: '',
+        quantity: '',
+        amount: '',
+        line_total: 0
+      }],
+      form: {
+        CustomerID: 0,
+        Outstanding: 0
+      }
+    };
   },
   methods: {
     loadStock: function loadStock() {
       var _this = this;
 
-      axios.get("api/stock").then(function (_ref2) {
-        var data = _ref2.data;
+      axios.get("api/stock").then(function (_ref) {
+        var data = _ref.data;
         return _this.stocks = data;
       });
     },
     loadCustomer: function loadCustomer() {
       var _this2 = this;
 
-      axios.get("api/customer").then(function (_ref3) {
-        var data = _ref3.data;
+      axios.get("api/customer").then(function (_ref2) {
+        var data = _ref2.data;
         return _this2.customers = data;
       });
     },
@@ -2606,20 +2603,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.form.Outstanding = subtotal.toFixed(2);
     },
     saveInvoice: function saveInvoice() {
-      var _this3 = this;
-
-      var data = {
-        invoice_products: this.invoice_products
+      console.log(JSON.stringify(this.invoice_products));
+      var formD = {
+        cli: this.form
       };
-      this.form.post('api/invoice', data).then(function (res) {
-        _this3.printme();
-
-        console.log(data);
+      var dataD = {
+        inc: this.invoice_products
+      };
+      axios.post('api/invoice', {
+        dataD: dataD,
+        formD: formD
+      }).then(function (res) {
+        console.log(res);
       })["catch"](function (e) {
-        _this3.$Progress.fail();
-
         console.log(e);
-      }); //this.form.post('api/invoice');
+      });
+      /* this.form.post('api/invoice', data)
+          .then( res => {
+              //this.printme();
+              console.log(data)
+          })
+          .catch( e => {
+              this.$Progress.fail()
+              console.log(e)
+          })  */
+      //this.form.post('api/invoice');
       // this.form.post('api/outstanding');
     },
     printme: function printme() {
@@ -44285,7 +44293,11 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control customername",
-                          attrs: { id: "customername", required: "" },
+                          attrs: {
+                            id: "customername",
+                            name: "CustomerID",
+                            required: ""
+                          },
                           on: {
                             change: function($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -44395,26 +44407,33 @@ var render = function() {
                                   ],
                                   staticClass: "form-control itemname",
                                   on: {
-                                    change: function($event) {
-                                      var $$selectedVal = Array.prototype.filter
-                                        .call($event.target.options, function(
-                                          o
-                                        ) {
-                                          return o.selected
-                                        })
-                                        .map(function(o) {
-                                          var val =
-                                            "_value" in o ? o._value : o.value
-                                          return val
-                                        })
-                                      _vm.$set(
-                                        invoice_product,
-                                        "itemname",
-                                        $event.target.multiple
-                                          ? $$selectedVal
-                                          : $$selectedVal[0]
-                                      )
-                                    }
+                                    change: [
+                                      function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.$set(
+                                          invoice_product,
+                                          "itemname",
+                                          $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        )
+                                      },
+                                      function($event) {
+                                        return _vm.calculateLineTotal(
+                                          invoice_product
+                                        )
+                                      }
+                                    ]
                                   }
                                 },
                                 [
@@ -44467,7 +44486,6 @@ var render = function() {
                                   min: "0",
                                   max: "invoice_product.itemname.Quantity",
                                   step: "1",
-                                  name: "quantity[]",
                                   value: "{invoice_product.itemname.qty}"
                                 },
                                 domProps: { value: invoice_product.quantity },
@@ -44548,8 +44566,7 @@ var render = function() {
                                   readonly: "",
                                   type: "number",
                                   min: "0",
-                                  step: ".01",
-                                  name: "line_total[]"
+                                  step: ".01"
                                 },
                                 domProps: { value: invoice_product.line_total },
                                 on: {

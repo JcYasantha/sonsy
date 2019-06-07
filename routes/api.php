@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('findStock','API\OrderController@search');
 Route::apiResources(['stock'=>'API\OrderController']);
 Route::apiResources(['invoice'=>'API\OrderController']);
+//Route::post('invoice',array('as' => 'invoice', 'uses' => 'API\OrderController@store'));
 Route::apiResources(['invoiceget'=>'API\invoiceCntroller']);
 Route::apiResources(['outstanding'=>'API\outstandingController']);
 Route::apiResources(['customer'=>'API\customerController']);

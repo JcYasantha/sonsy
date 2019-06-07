@@ -31,9 +31,33 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $invoice_products = json_decode($request->getContent('data'), true);
-
+        $invoice_products = json_decode($request->getContent('dataD','formD'), true);
+        $formData = $invoice_products['formD'];
+        $pro_info = $invoice_products['dataD'];
+        
         $invoice = new Invoice;
+        $invoice-> CustomerID = $formData['cli']['CustomerID'];
+        $invoice-> Outstanding= $formData['cli']['Outstanding'];
+        $invoice->save();
+
+        $InvoiceNo = DB::getPdo()->lastInsertId();
+
+        $outstanding = new Outstanding_Payments;
+        $outstanding -> InvoiceNo = $InvoiceNo;
+        $outstanding -> InvoiceValue = $formData['cli']['Outstanding'];
+        $outstanding->save();
+
+        foreach ($pro_info as $inv) {
+            foreach ($inv as $c) {
+                Item::create([
+                    'InvoiceNo' => $InvoiceNo,
+                    'Items' => $c['itemname']['id'],
+                    'Quantity' => $c['quantity'],
+                    'Amount' => $c['line_total'],
+                ]);
+            }
+        }
+        /* $invoice = new Invoice;
         $invoice-> CustomerID = $request -> CustomerID;
         $invoice-> Outstanding= $request -> Outstanding;
         $invoice->save();
@@ -45,7 +69,9 @@ class OrderController extends Controller
         $outstanding -> InvoiceValue = $request -> Outstanding;
         $outstanding->save();
 
-        /* foreach ($invoice_products as $invoice_product) {
+            return $invoice_products; */
+        
+         /* foreach ($invoice_products as $invoice_product) {
 
             return Item::create([
                 'InvoiceNo' => $InvoiceNo,
@@ -53,7 +79,7 @@ class OrderController extends Controller
                 'Quantity' => $invoice_product['quantity'],
                 'Amount' => $invoice_product['line_total'],
             ]);
-       } */
+       }  */
         
     }
 

@@ -10,7 +10,7 @@
                                 <div class="col-lg-6 col-sm-6"> 
                                      <div class="form-group" >
                                         <label for="customer">Select the Customer</label>
-                                        <select id="customername" class="form-control customername" v-model="form.CustomerID" required>
+                                        <select id="customername" class="form-control customername" name="CustomerID" v-model="form.CustomerID" required>
                                                     <option value="0" selected="true" disabled="true" >select the customer</option>
                                                          <option v-for="customer in customers" :key="customer.CustomerID" v-bind:value="customer.CustomerID">{{customer.Fname}}</option>       
                                                 </select>
@@ -20,7 +20,7 @@
                                 <!-- <div class="col-lg-6 col-sm-6"> 
                                      <div class="form-group" >
                                         <label>Last Invoice #0{{InvoiceNo.InvoiceNo}}</label>
-                                        <input type="number" min="InvoiceNo.InvoiceNo+1" v-model="form.newInvoiceNo" class="form-control">
+                                         <input type="number" min="InvoiceNo.InvoiceNo+1" v-model="form.newInvoiceNo" class="form-control">
                                     </div>
                                     <br><br><br>
                                 </div>-->
@@ -37,15 +37,15 @@
                                     <tbody>
                                         <tr v-for="(invoice_product, k) in invoice_products" :key="k">
                                             <td>
-                                                <select v-model="invoice_product.itemname" class="form-control itemname">
-                                                    <option value="0" selected="true" disabled="true" >select</option>
-                                                         <option v-for="stock in stocks" :key="stock.ItemNo" v-bind:value="{ id: stock.id, SellingPrice: stock.SellingPrice }" name="itemname[]">{{stock.ItemName}}</option>       
+                                                <select v-model="invoice_product.itemname" class="form-control itemname" @change="calculateLineTotal(invoice_product)">
+                                                    <option value="0" selected="true" disabled="true">select</option>
+                                                         <option v-for="stock in stocks" :key="stock.ItemNo" :value="{ id: stock.id, SellingPrice: stock.SellingPrice }" name="itemname[]">{{stock.ItemName}}</option>       
                                                 </select>
                                                 
                                             </td>
-                                            <td><input type="number" min="0" max="invoice_product.itemname.Quantity" step="1" v-model="invoice_product.quantity" name="quantity[]" value="{invoice_product.itemname.qty}" class="form-control qty" @change="calculateLineTotal(invoice_product)"></td>
+                                            <td><input type="number" min="0" max="invoice_product.itemname.Quantity" step="1" v-model="invoice_product.quantity" value="{invoice_product.itemname.qty}" class="form-control qty" @change="calculateLineTotal(invoice_product)"></td>
                                             <td><input readonly type="number" min="0" step="1" v-model="invoice_product.itemname.SellingPrice" class="form-control amount" @change="calculateLineTotal(invoice_product)"></td>
-                                            <td><input readonly class="form-control total" type="number" min="0" step=".01" name="line_total[]" v-model="invoice_product.line_total" /></td>
+                                            <td><input readonly class="form-control total" type="number" min="0" step=".01" v-model="invoice_product.line_total" /></td>
                                             <td style="text-align:center;"><a href="#" class="remove" style="color:red;" @click="deleteRow(k, invoice_product)"><i class="material-icons icon">delete</i></a></td>
                                         </tr>
                                     </tbody>
@@ -76,17 +76,16 @@
                 stocks : {},
                 customers:{},
                 InvoiceNo:{},
-                invoice_products:{},
                 invoice_products: [{
-                    itemname: [],
-                    quantity: [],
-                    amount:[] ,
-                    line_total:0
+                    itemname: '',
+                    quantity: '',
+                    amount: '',
+                    line_total:0,
                 }],
-            form: new Form({
-                newInvoiceNo:0,
+            form:{
+                CustomerID:0,
                 Outstanding: 0,
-            })
+                }
             }
         },
         methods:{
@@ -134,18 +133,30 @@
             },
         
             saveInvoice(){
-                var data = {
-                    invoice_products: this.invoice_products,
+                console.log(JSON.stringify(this.invoice_products));
+                let formD = {
+                    cli: this.form
                 }
-                this.form.post('api/invoice', data)
+                let dataD = {
+                    inc: this.invoice_products
+                }
+                
+                axios.post('api/invoice', {dataD, formD})
+                .then( res => {
+                    console.log(res)
+                })
+                .catch( e => {
+                    console.log(e)
+                })
+                /* this.form.post('api/invoice', data)
                     .then( res => {
-                        this.printme();
+                        //this.printme();
                         console.log(data)
                     })
                     .catch( e => {
                         this.$Progress.fail()
                         console.log(e)
-                    }) 
+                    })  */
                 //this.form.post('api/invoice');
                // this.form.post('api/outstanding');
             },

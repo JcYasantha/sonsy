@@ -21,6 +21,7 @@ class CreateSuppliersTable extends Migration
             $table->integer('No');
             $table->string('Street');
             $table->string('City');
+            $table->timestamps();
         });
     }
 
