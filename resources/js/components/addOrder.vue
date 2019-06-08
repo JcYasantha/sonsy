@@ -143,6 +143,7 @@
                 
                 axios.post('api/invoice', {dataD, formD})
                 .then( res => {
+                    this.$router.push('printInvoice') 
                     console.log(res)
                 })
                 .catch( e => {
