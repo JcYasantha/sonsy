@@ -18,6 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('findStock','API\OrderController@search');
+Route::get('customerID/{CustomerID}', 'API\customerController@show');
+Route::get('getItems/{InvoiceNo}', 'API\invoiceCntroller@show');
 Route::apiResources(['stock'=>'API\OrderController']);
 Route::apiResources(['invoice'=>'API\OrderController']);
 //Route::post('invoice',array('as' => 'invoice', 'uses' => 'API\OrderController@store'));

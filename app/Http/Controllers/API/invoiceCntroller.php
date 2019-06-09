@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Invoice;
+use App\Item;
 class invoiceCntroller extends Controller
 {
     /**
@@ -34,9 +35,11 @@ class invoiceCntroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($InvoiceNo)
     {
-        //
+        //$getItems = DB::select('select * from items where InvoiceNo="$InvoiceNo"');
+        $getItems = DB::table('items')->where('InvoiceNo', $InvoiceNo)->get();
+        return $getItems;
     }
 
     /**

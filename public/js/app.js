@@ -2539,7 +2539,7 @@ __webpack_require__.r(__webpack_exports__);
         line_total: 0
       }],
       form: {
-        CustomerID: 0,
+        id: 0,
         Outstanding: 0
       }
     };
@@ -2701,14 +2701,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       InvoiceNo: {},
+      customerDetails: {},
+      getItems: {},
       form: new Form({})
     };
   },
-  method: {
+  methods: {
     invoiceLastId: function invoiceLastId() {
       var _this = this;
 
@@ -2718,8 +2761,27 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     customerInfo: function customerInfo() {
-      this.form.check('api/customer/' + this.form.id).then(function () {})["catch"](function () {// this.$Progress.fail();
+      var _this2 = this;
+
+      axios.get("api/customerID/" + this.InvoiceNo.CustomerID).then(function (_ref2) {
+        var data = _ref2.data;
+        return _this2.customerDetails = data;
       });
+    },
+    getItem: function getItem() {
+      var _this3 = this;
+
+      axios.get("api/getItems/" + this.InvoiceNo.InvoiceNo).then(function (_ref3) {
+        var data = _ref3.data;
+        return _this3.getItems = data;
+      });
+    },
+    Generate: function Generate() {
+      this.customerInfo();
+      this.getItem();
+    },
+    printInvoice: function printInvoice() {
+      window.print();
     }
   },
   created: function created() {
@@ -44342,14 +44404,14 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.CustomerID,
-                              expression: "form.CustomerID"
+                              value: _vm.form.id,
+                              expression: "form.id"
                             }
                           ],
                           staticClass: "form-control customername",
                           attrs: {
                             id: "customername",
-                            name: "CustomerID",
+                            name: "id",
                             required: ""
                           },
                           on: {
@@ -44364,7 +44426,7 @@ var render = function() {
                                 })
                               _vm.$set(
                                 _vm.form,
-                                "CustomerID",
+                                "id",
                                 $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
@@ -44389,8 +44451,8 @@ var render = function() {
                             return _c(
                               "option",
                               {
-                                key: customer.CustomerID,
-                                domProps: { value: customer.CustomerID }
+                                key: customer.id,
+                                domProps: { value: customer.id }
                               },
                               [_vm._v(_vm._s(customer.Fname))]
                             )
@@ -44511,7 +44573,7 @@ var render = function() {
                                         attrs: { name: "itemname[]" },
                                         domProps: {
                                           value: {
-                                            id: stock.id,
+                                            id: stock.ItemName,
                                             SellingPrice: stock.SellingPrice
                                           }
                                         }
@@ -44794,25 +44856,188 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("h3", { staticStyle: { "text-align": "center" } }, [
+              _vm._v("SONSY TRADING")
+            ]),
+            _vm._v(" "),
+            _c("h5", { staticStyle: { "text-align": "center" } }, [
+              _vm._v("Invoice No:" + _vm._s(_vm.InvoiceNo.InvoiceNo))
+            ]),
+            _vm._v(" "),
+            _c("h6", { staticStyle: { "text-align": "center" } }, [
+              _vm._v("Date:" + _vm._s(_vm.InvoiceNo.created_at))
+            ]),
+            _c("br"),
+            _c("br"),
+            _vm._v(" "),
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.Generate($event)
+                  }
+                }
+              },
+              [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.InvoiceNo.CustomerID,
+                      expression: "InvoiceNo.CustomerID"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "hidden" },
+                  domProps: { value: _vm.InvoiceNo.CustomerID },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.InvoiceNo, "CustomerID", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm._m(0),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    _vm._s(_vm.customerDetails.Fname) +
+                      " " +
+                      _vm._s(_vm.customerDetails.Lname)
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n                    " + _vm._s(_vm.customerDetails.City)
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.customerDetails.Street)
+                  ),
+                  _c("br"),
+                  _vm._v(
+                    "\n                    Tel:" +
+                      _vm._s(_vm.customerDetails.No)
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass: "table table-bordered",
+                      attrs: { id: "protable" }
+                    },
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.getItems, function(item) {
+                          return _c("tr", { key: item.ID }, [
+                            _c("td", [_vm._v(_vm._s(item.Items))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.Quantity))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.Amount))])
+                          ])
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c("tfoot", [
+                        _c("tr", [
+                          _c("td", { staticStyle: { border: "none" } }),
+                          _vm._v(" "),
+                          _vm._m(2),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("b", { staticClass: "total" }, [
+                              _vm._v(_vm._s(_vm.InvoiceNo.Outstanding))
+                            ])
+                          ])
+                        ])
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { id: "saveInvoice" },
+                      on: {
+                        click: function($event) {
+                          return _vm.Generate()
+                        }
+                      }
+                    },
+                    [_vm._v("Generate Invoice")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { id: "sa" },
+                      on: {
+                        click: function($event) {
+                          return _vm.printInvoice()
+                        }
+                      }
+                    },
+                    [_vm._v("Print")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" })
+              ]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("h3", { staticStyle: { "text-align": "center" } }, [
-              _vm._v("SONSY TRADING")
-            ]),
-            _vm._v(" "),
-            _c("p")
-          ])
-        ])
-      ])
+    return _c("h6", [_c("strong", [_vm._v("Customer:")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", [_vm._v("Item Name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Quantity")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Amount")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticStyle: { border: "none" } }, [
+      _vm._v("Total"),
+      _c("b", { staticStyle: { float: "right" } }, [_vm._v("(Rs)")])
     ])
   }
 ]

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Customer;
@@ -23,6 +23,7 @@ class customerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         return Customer::create([
@@ -41,9 +42,13 @@ class customerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($CustomerID)
     {
-        //
+        //$customerDetails = DB::table('customers')->find($CustomerID);
+        $customerDetails = Customer::findOrFail($CustomerID);
+        return $customerDetails;
+        /* $customerDetails = DB::table('Customer')->find($id);
+        return $customerDetails; */
     }
 
     /**

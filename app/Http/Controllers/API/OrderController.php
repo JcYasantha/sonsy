@@ -36,7 +36,7 @@ class OrderController extends Controller
         $pro_info = $invoice_products['dataD'];
         
         $invoice = new Invoice;
-        $invoice-> CustomerID = $formData['cli']['CustomerID'];
+        $invoice-> CustomerID = $formData['cli']['id'];
         $invoice-> Outstanding= $formData['cli']['Outstanding'];
         $invoice->save();
 

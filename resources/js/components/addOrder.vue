@@ -10,9 +10,9 @@
                                 <div class="col-lg-6 col-sm-6"> 
                                      <div class="form-group" >
                                         <label for="customer">Select the Customer</label>
-                                        <select id="customername" class="form-control customername" name="CustomerID" v-model="form.CustomerID" required>
+                                        <select id="customername" class="form-control customername" name="id" v-model="form.id" required>
                                                     <option value="0" selected="true" disabled="true" >select the customer</option>
-                                                         <option v-for="customer in customers" :key="customer.CustomerID" v-bind:value="customer.CustomerID">{{customer.Fname}}</option>       
+                                                         <option v-for="customer in customers" :key="customer.id" v-bind:value="customer.id">{{customer.Fname}}</option>       
                                                 </select>
                                     </div>
                                     <br><br><br>
@@ -39,7 +39,7 @@
                                             <td>
                                                 <select v-model="invoice_product.itemname" class="form-control itemname" @change="calculateLineTotal(invoice_product)">
                                                     <option value="0" selected="true" disabled="true">select</option>
-                                                         <option v-for="stock in stocks" :key="stock.ItemNo" :value="{ id: stock.id, SellingPrice: stock.SellingPrice }" name="itemname[]">{{stock.ItemName}}</option>       
+                                                         <option v-for="stock in stocks" :key="stock.ItemNo" :value="{ id: stock.ItemName, SellingPrice: stock.SellingPrice }" name="itemname[]">{{stock.ItemName}}</option>       
                                                 </select>
                                                 
                                             </td>
@@ -83,7 +83,7 @@
                     line_total:0,
                 }],
             form:{
-                CustomerID:0,
+                id:0,
                 Outstanding: 0,
                 }
             }
