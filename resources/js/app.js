@@ -11,6 +11,11 @@ require('./edit');
 //importing vue router
 window.Vue = require('vue');
 import { Form, HasError, AlertError } from 'vform'
+
+//importing Gate tod authenticate user
+import Gate from "./Gate";
+Vue.prototype.$gate = new Gate(window.user);
+
 import Swal from 'sweetalert2'
 window.Swal = Swal;
 const Toast = Swal.mixin({
@@ -53,7 +58,25 @@ window.Fire = new Vue();
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+Vue.component(
+  'passport-clients',
+  require('./components/passport/Clients.vue').default
+);
 
+Vue.component(
+  'passport-authorized-clients',
+  require('./components/passport/AuthorizedClients.vue').default
+);
+
+Vue.component(
+  'passport-personal-access-tokens',
+  require('./components/passport/PersonalAccessTokens.vue').default
+);
+
+Vue.component(
+  'not-found',
+  require('./components/NotFound.vue').default
+);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 /**

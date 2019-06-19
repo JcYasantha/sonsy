@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row">
+        <div class="row" v-if="$gate.isAdminOrKeeper()">
         <div class="col-md-12">
         <h3 class="card-title">Stock Items</h3>
           <div class="card">
@@ -22,7 +22,7 @@
                   <th>Quantity</th>
                   <th>SellingPrice</th>
                   <th>TotalBalance</th>
-                  <th>Modify</th>
+                  <th v-if="$gate.isAdmin()">Modify</th>
                 </tr>
                 <tr v-for="stock in stocks" :key="stock.ItemNo">
                   <td>{{stock.id}}</td>
@@ -34,7 +34,7 @@
                   <td>{{stock.Quantity}}</td>
                   <td>{{stock.SellingPrice}}</td>
                   <td>{{stock.TotalBalance}}</td>
-                  <td>
+                  <td v-if="$gate.isAdmin()">
                       <!--<router-link to="/editStock">Edit</router-link>-->
                       <a href="#" @click="editModal(stock)" data-toggle="modal" data-target="#editIt">Edit</a> <b>|</b>
                       <a href="#" id="del" @click="deleteStock(stock.id)">Delete</a>
@@ -46,6 +46,9 @@
           </div>
           <!-- /.box -->
         </div>
+      </div>
+      <div v-if="!$gate.isAdminOrKeeper()">
+          <not-found></not-found>
       </div>
       <!-- Modal -->
         <div class="modal fade" id="editIt" tabindex="-1" role="dialog" aria-labelledby="EditItTitle" aria-hidden="true">
@@ -106,9 +109,9 @@
                           <label>SellingPrice</label>
                           <input v-model="form.SellingPrice" type="number" name="SellingPrice"
                               placeholder="Enter SellingPrice"
-                              class="form-control" :class="{ 'is-invalid': form.errors.has('SellingPrice') }">
+                              class="form-control" :class="{ 'is-invalid': form.errors.has('SellingPrice') }"> 
                           <has-error :form="form" field="SellingPrice"></has-error>
-                      </div>
+                      </div> 
                       <div class="form-group col-md-6">
                           <label>TotalBalance</label>
                           <input v-model="form.TotalBalance" type="number" name="TotalBalance"
@@ -199,7 +202,9 @@
                     })
                 },
                 loadStock(){
+                  if(this.$gate.isAdminOrKeeper()){
                     axios.get("api/stocks").then(({ data }) => this.stocks = data.data);
+                  }
                 },
                 addItem(){
                     this.form.post('api/stock')

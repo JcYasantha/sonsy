@@ -11,7 +11,7 @@
                                      <div class="form-group" >
                                         <label for="customer">Select the Customer</label>
                                         <select id="customername" class="form-control customername" name="id" v-model="form.id" required>
-                                                    <option value="0" selected="true" disabled="true" >select the customer</option>
+                                                    <!-- <option value="0" selected="true" disabled="true" >select the customer</option> -->
                                                          <option v-for="customer in customers" :key="customer.id" v-bind:value="customer.id">{{customer.Fname}}</option>       
                                                 </select>
                                     </div>
@@ -37,15 +37,15 @@
                                     <tbody>
                                         <tr v-for="(invoice_product, k) in invoice_products" :key="k">
                                             <td>
-                                                <select v-model="invoice_product.itemname" class="form-control itemname" @change="calculateLineTotal(invoice_product)">
-                                                    <option value="0" selected="true" disabled="true">select</option>
+                                                <select v-model="invoice_product.itemname" class="form-control itemname" @change="calculateLineTotal(invoice_product)" required>
+                                                    <!-- <option value="0" selected="true" disabled="true">select</option> -->
                                                          <option v-for="stock in stocks" :key="stock.ItemNo" :value="{ id: stock.ItemName, SellingPrice: stock.SellingPrice }" name="itemname[]">{{stock.ItemName}}</option>       
                                                 </select>
                                                 
                                             </td>
-                                            <td><input type="number" min="0" max="invoice_product.itemname.Quantity" step="1" v-model="invoice_product.quantity" value="{invoice_product.itemname.qty}" class="form-control qty" @change="calculateLineTotal(invoice_product)"></td>
-                                            <td><input readonly type="number" min="0" step="1" v-model="invoice_product.itemname.SellingPrice" class="form-control amount" @change="calculateLineTotal(invoice_product)"></td>
-                                            <td><input readonly class="form-control total" type="number" min="0" step=".01" v-model="invoice_product.line_total" /></td>
+                                            <td><input type="number" required min="0" max="invoice_product.itemname.Quantity" step="1" v-model="invoice_product.quantity" value="{invoice_product.itemname.qty}" class="form-control qty" @change="calculateLineTotal(invoice_product)"></td>
+                                            <td><input readonly required type="number" min="0" step="1" v-model="invoice_product.itemname.SellingPrice" class="form-control amount" @change="calculateLineTotal(invoice_product)"></td>
+                                            <td><input readonly required class="form-control total" type="number" min="0" step=".01" v-model="invoice_product.line_total" /></td>
                                             <td style="text-align:center;"><a href="#" class="remove" style="color:red;" @click="deleteRow(k, invoice_product)"><i class="material-icons icon">delete</i></a></td>
                                         </tr>
                                     </tbody>
@@ -110,7 +110,11 @@
                 var idx = this.invoice_products.indexOf(invoice_product);
                 console.log(idx, index);
                 if (idx > -1) {
-                    this.invoice_products.splice(idx, 1);
+                    if(idx==0){
+
+                    }else{
+                        this.invoice_products.splice(idx, 1);
+                    }
                 }
                 this.calculateTotal();
             },

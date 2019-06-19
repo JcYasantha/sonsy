@@ -8,13 +8,24 @@ use App\Stock;
 class StockController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return Stock::latest()->paginate(10);
+        if(\Gate::allows('isAdmin') || \Gate::allows('isStockKeeper')){
+            return Stock::latest()->paginate(10);
+        }
     }
 
     /**
@@ -89,6 +100,8 @@ class StockController extends Controller
      */
     public function destroy($id)
     {
+       //$this->authorize('isAdmin');
+
         $stocks = Stock::findOrFail($id);
         $stocks -> delete();
     }

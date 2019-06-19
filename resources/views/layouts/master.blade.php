@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Page Title</title>
+  <title>Sonsy Trading</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -50,9 +50,11 @@
           <li class="nav-item">
             <router-link to="/dashboard" class="nav-link sideLink px-2"><i class="material-icons icon">dashboard</i><span class="text">Dashboard</span></router-link>
           </li>
+          @can('isAdmin')
           <li class="nav-item">
-            <router-link to="/users" class="nav-link sideLink px-2"><i class="material-icons icon">person</i><span class="text">Users</span></router-link>
+            <router-link to="/users" class="nav-link sideLink px-2"><i class="material-icons icon">people</i><span class="text">Users</span></router-link>
           </li>
+          @endcan
           <li class="nav-item">
             <router-link to="/test1" class="nav-link sideLink px-2"><i class="material-icons icon">insert_chart</i><span class="text">chart</span></router-link>
           </li>
@@ -69,7 +71,7 @@
             <router-link to="/test2" class="nav-link sideLink px-2"><i class="material-icons icon">settings</i><span class="text">Settings</span></router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/test3" class="nav-link sideLink sideMenuToggler px-2"><i class="material-icons icon">view_list</i><span class="text">Resize</span></router-link>
+            <router-link to="#" class="nav-link sideLink sideMenuToggler px-2"><i class="material-icons icon">view_list</i><span class="text">Resize</span></router-link>
           </li>
           <li class="nav-item">
 
@@ -95,6 +97,11 @@
   </div>
 </div>
 
+@auth
+<script>
+    window.user = @json(auth()->user())
+</script>
+@endauth
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}" defer></script>
 

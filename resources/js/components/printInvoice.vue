@@ -14,7 +14,7 @@
                         {{customerDetails.City}}<br>
                         {{customerDetails.Street}}<br>
                         Tel:{{customerDetails.No}}</p>
-                        <div class="row">
+                        <div class="row ">
                                 <table class="table table-bordered" id="protable">
                                     <thead>
                                         <th>Item Name</th>

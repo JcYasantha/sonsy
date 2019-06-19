@@ -55,8 +55,13 @@ class OrderController extends Controller
                     'Quantity' => $c['quantity'],
                     'Amount' => $c['line_total'],
                 ]);
+                $itemQuantity = Stock::select('Quantity')
+                    ->where('ItemName','=', $c['itemname']['id'])
+                    ->first();
+                DB::update('update stocks set Quantity = ? where ItemName = ?',[$itemQuantity['Quantity'] - $c['quantity'],$c['itemname']['id']]);
             }
         }
+        return $InvoiceNo;
         /* $invoice = new Invoice;
         $invoice-> CustomerID = $request -> CustomerID;
         $invoice-> Outstanding= $request -> Outstanding;
@@ -103,7 +108,7 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd($id);
     }
 
     /**
