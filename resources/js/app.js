@@ -40,7 +40,8 @@ let routes = [
     { path: '/addOrder', component:  require('./components/addorder.vue').default },
     { path: '/addStock', component:  require('./components/addStock.vue').default },
     { path: '/printInvoice', component:  require('./components/printInvoice.vue').default },
-    { path: '/addPeople', component:  require('./components/addPeople.vue').default }
+    { path: '/addPeople', component:  require('./components/addPeople.vue').default },
+    { path: '/viewCustomer', component:  require('./components/viewCustomer.vue').default }
   ]
 
 const router = new VueRouter({

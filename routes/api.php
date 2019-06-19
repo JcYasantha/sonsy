@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('findStock','API\OrderController@search');
 Route::get('customerID/{CustomerID}', 'API\customerController@show');
 Route::get('getItems/{InvoiceNo}', 'API\invoiceCntroller@show');
+Route::get('ViewOutstanding/{id}', 'API\OutstandingAndPayments@show');
+Route::get('totalOutstanding/{id}', 'API\totalOutstandingController@show');
 Route::apiResources(['stock'=>'API\OrderController']);
 Route::apiResources(['invoice'=>'API\OrderController']);
 //Route::post('invoice',array('as' => 'invoice', 'uses' => 'API\OrderController@store'));
@@ -30,3 +32,4 @@ Route::apiResources(['stocks' => 'API\StockController']);
 Route::apiResources(['users' => 'API\UserController']);
 Route::apiResources(['addusers' => 'API\UserController']);
 Route::apiResources(['supplier' => 'API\SupplierController']);
+Route::apiResources(['View' => 'API\viewCustomerController']);
