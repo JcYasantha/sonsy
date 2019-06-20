@@ -23,5 +23,10 @@ export default class Gate{
             return true;
         }
     }
+    isAdminOrCashier(){
+        if(this.user.type ==='Admin' || this.user.type ==='Cashier'){
+            return true;
+        }
+    }
 
 }

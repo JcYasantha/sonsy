@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="card">
+        <div class="card" v-if="$gate.isAdminOrKeeper()">
             <div class="card-header">
                <center><b>Add Stock Items</b></center>
             </div>
@@ -134,6 +134,9 @@
                 </div>
             </form>
         </div>
+        <div v-if="!$gate.isAdminOrKeeper()">
+          <not-found></not-found>
+      </div>
     </div>    
 </template>
 
