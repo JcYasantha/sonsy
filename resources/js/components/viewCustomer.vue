@@ -77,7 +77,7 @@
                    
                   </tr>
                   <tr v-for="Outstandings in viewsOutstanding" :key="Outstandings.InvoiceNo"> 
-                     <td>{{Outstandings.CustomerID}}</td>
+                     <td>{{Outstandings.InvoiceNo}}</td>
                     <td>{{Outstandings.Outstanding}}</td>
                   </tr>
                   <tr>

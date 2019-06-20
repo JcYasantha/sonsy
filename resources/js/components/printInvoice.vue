@@ -86,3 +86,11 @@
         }
     }
 </script>
+<style>
+    @media print{
+        #saveInvoice ,#sa{
+            opacity:0;
+        }
+    }
+</style>
+
