@@ -61,6 +61,7 @@
           <li class="nav-item">
             <router-link to="/Stock" class="nav-link sideLink px-2"><i class="material-icons icon">stock</i><span class="text">Stock</span></router-link>
           </li>
+          @can('isAdmin')
           <li class="nav-item">
             <router-link to="/addOrder" class="nav-link sideLink px-2"><i class="material-icons icon">add_circle</i><span class="text">Add Order</span></router-link>
           </li>
@@ -68,8 +69,9 @@
             <router-link to="/addPeople" class="nav-link sideLink px-2"><i class="material-icons icon">add_circle</i><span class="text">Add People</span></router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/viewCustomer" class="nav-link sideLink px-2"><i class="material-icons icon">view</i><span class="text">View</span></router-link>
+            <router-link to="/viewCustomer" class="nav-link sideLink px-2"><i class="material-icons icon">pageview</i><span class="text">Customer History</span></router-link>
           </li>
+          @endcan
             <router-link to="/cashier" class="nav-link sideLink px-2"><i class="material-icons icon">payment</i><span class="text">Cashier</span></router-link>
           </li>
           <li class="nav-item">
