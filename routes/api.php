@@ -17,13 +17,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::apiResources(['outstandings' => 'API\CashierController']);
+
 Route::get('findStock','API\OrderController@search');
 Route::get('customerID/{CustomerID}', 'API\customerController@show');
 Route::get('getItems/{InvoiceNo}', 'API\invoiceCntroller@show');
+<<<<<<< Updated upstream
 Route::get('ViewOutstanding/{id}', 'API\OutstandingAndPayments@show');
 Route::get('totalOutstanding/{id}', 'API\totalOutstandingController@show');
+=======
+Route::get('loadOutstanding/{id}', 'API\viewinvoiceController@show');
+>>>>>>> Stashed changes
 Route::apiResources(['stock'=>'API\OrderController']);
 Route::apiResources(['invoice'=>'API\OrderController']);
+Route::apiResources(['savePayment'=>'API\viewinvoiceController']);
 //Route::post('invoice',array('as' => 'invoice', 'uses' => 'API\OrderController@store'));
 Route::apiResources(['invoiceget'=>'API\invoiceCntroller']);
 Route::apiResources(['outstanding'=>'API\outstandingController']);
@@ -32,4 +39,9 @@ Route::apiResources(['stocks' => 'API\StockController']);
 Route::apiResources(['users' => 'API\UserController']);
 Route::apiResources(['addusers' => 'API\UserController']);
 Route::apiResources(['supplier' => 'API\SupplierController']);
+<<<<<<< Updated upstream
 Route::apiResources(['View' => 'API\viewCustomerController']);
+=======
+Route::apiResources(['postdated_cheques' => 'API\CashierController']);
+Route::apiResources(['lordcustomer' => 'API\viewController']);
+>>>>>>> Stashed changes

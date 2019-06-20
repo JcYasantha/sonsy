@@ -16,7 +16,7 @@ class CreateOutstandingPaymentsTable extends Migration
         Schema::create('outstanding__payments', function (Blueprint $table) {
             $table->bigIncrements('OrderNo');
             $table->integer('InvoiceNo');
-            $table->date('InvoiceDate')->nullable();
+            $table->integer('CustomerID');
             $table->double('InvoiceValue')->default(0);
             $table->double('SettledAmount')->default(0);
             $table->double('Balance')->default(0);

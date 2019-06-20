@@ -44,7 +44,9 @@ class OrderController extends Controller
 
         $outstanding = new Outstanding_Payments;
         $outstanding -> InvoiceNo = $InvoiceNo;
+        $outstanding -> CustomerID = $formData['cli']['id'];
         $outstanding -> InvoiceValue = $formData['cli']['Outstanding'];
+        $outstanding -> Balance = $formData['cli']['Outstanding'];
         $outstanding->save();
 
         foreach ($pro_info as $inv) {

@@ -41,7 +41,12 @@ let routes = [
     { path: '/addStock', component:  require('./components/addStock.vue').default },
     { path: '/printInvoice', component:  require('./components/printInvoice.vue').default },
     { path: '/addPeople', component:  require('./components/addPeople.vue').default },
+<<<<<<< Updated upstream
     { path: '/viewCustomer', component:  require('./components/viewCustomer.vue').default }
+=======
+    { path: '/cashier', component:  require('./components/cashier.vue').default },
+    { path: '/payment', component:  require('./components/payment.vue').default }
+>>>>>>> Stashed changes
   ]
 
 const router = new VueRouter({
