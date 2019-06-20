@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row mt-5">
+        <div class="row mt-5" v-if="$gate.isAdminOrCashier()">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
@@ -94,7 +94,9 @@
             </div>
           </div>
         </div>
-
+      <div v-if="!$gate.isAdminOrCashier()">
+          <not-found></not-found>
+      </div>
 
         <!-- Modal -->
 <div class="modal fade" id="invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
