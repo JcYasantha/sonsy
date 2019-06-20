@@ -4108,6 +4108,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -49187,7 +49189,11 @@ var render = function() {
                           return _c("tr", { key: Outstandings.InvoiceNo }, [
                             _c("td", [_vm._v(_vm._s(Outstandings.InvoiceNo))]),
                             _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(Outstandings.Outstanding))])
+                            _c("td", [
+                              _vm._v(_vm._s(Outstandings.InvoiceValue))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(Outstandings.Balance))])
                           ])
                         }),
                         _vm._v(" "),
@@ -49275,6 +49281,8 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("tr", [
       _c("th", [_vm._v("Indvoice No")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Invoice Value")]),
       _vm._v(" "),
       _c("th", [_vm._v("Outstanding")])
     ])

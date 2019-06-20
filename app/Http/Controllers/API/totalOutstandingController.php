@@ -38,7 +38,7 @@ class totalOutstandingController extends Controller
      */
     public function show($id)
     {
-        $total = DB::table('invoices')->where('CustomerID', $id)->sum('invoices.Outstanding');
+        $total = DB::table('outstanding__payments')->where('CustomerID', $id)->sum('outstanding__payments.Balance');
         return $total;
     }
 
