@@ -17,11 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-<<<<<<< Updated upstream
         'name', 'email', 'password','id'
-=======
-        'name', 'email', 'password','chequeNo',
->>>>>>> Stashed changes
     ];
 
     /**
