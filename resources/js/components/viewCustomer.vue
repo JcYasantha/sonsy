@@ -73,12 +73,14 @@
                 <table class="table table-hover">
                   <tbody><tr>
                     <th>Indvoice No</th>
+                    <th>Invoice Value</th>
                     <th>Outstanding</th>
                    
                   </tr>
                   <tr v-for="Outstandings in viewsOutstanding" :key="Outstandings.InvoiceNo"> 
                      <td>{{Outstandings.InvoiceNo}}</td>
-                    <td>{{Outstandings.Outstanding}}</td>
+                     <td>{{Outstandings.InvoiceValue}}</td>
+                    <td>{{Outstandings.Balance}}</td>
                   </tr>
                   <tr>
                     <td>

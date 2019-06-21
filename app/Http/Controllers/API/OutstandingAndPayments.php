@@ -39,7 +39,7 @@ class OutstandingAndPayments extends Controller
      */
     public function show($id)
     {
-        $getDetails = DB::table('invoices')->where('CustomerID', $id)->get();
+        $getDetails = DB::table('outstanding__payments')->where('CustomerID', $id)->get();
         return $getDetails;
     }
 

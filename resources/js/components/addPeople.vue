@@ -66,7 +66,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label>PhoneNO</label>
-                        <input v-model="form2.PhoneNO" type="text" name="PhoneNO"
+                        <input v-model="form2.PhoneNO" type="text" name="PhoneNO" pattern="[0]{1}[1-9]{9}" title="enter to correct pattern"
                             placeholder="Enter PhoneNO"
                             class="form-control" :class="{ 'is-invalid': form2.errors.has('PhoneNO') }">
                         <has-error :form="form2" field="PhoneNO"></has-error>
@@ -130,10 +130,35 @@ export default {
     },
     methods:{
         AddCustomer(){
-            this.form.post('api/customer');
+            /* this.form.post('api/customer')
+            .then(({data}) => (this.form.reset())); */
+            this.form.post('api/customer')
+            .then(()=>{
+                Swal.fire(
+                    'Addedd!',
+                              'Customer Added',
+                              'success'
+                            )  
+              this.form.reset();
+                })
+                .catch(()=>{
+                    
+                })
+
         },
         AddSupplier(){
-            this.form2.post('api/supplier');
+            this.form2.post('api/supplier')
+            .then(()=>{
+                Swal.fire(
+                    'Addedd!',
+                              'Supplier Added',
+                              'success'
+                            )  
+              this.form2.reset();
+                })
+                .catch(()=>{
+                    
+                })
         }
     }
 }

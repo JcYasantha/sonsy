@@ -14,23 +14,17 @@
               <table class="table table-hover">
                 <tbody><tr>
                   <th>ID</th>
-                  <th>ItemName</th>
-                  <th>UnitPrice</th>
-                  <th>Discount</th>
-                  <th>SupplierId</th>
-                  <th>InvoiceNo</th>
+                  <th>Item Name</th>
+                  <th>Unit Price</th>
                   <th>Quantity</th>
-                  <th>SellingPrice</th>
-                  <th>TotalBalance</th>
+                  <th>Selling Price</th>
+                  <th>Total Balance</th>
                   <th v-if="$gate.isAdmin()">Modify</th>
                 </tr>
                 <tr v-for="stock in stocks" :key="stock.ItemNo">
                   <td>{{stock.id}}</td>
                   <td>{{stock.ItemName}}</td>
                   <td>{{stock.UnitPrice}}</td>
-                  <td>{{stock.Discount}}</td>
-                  <td>{{stock.SupplierId}}</td>
-                  <td>{{stock.InvoiceNo}}</td>
                   <td>{{stock.Quantity}}</td>
                   <td>{{stock.SellingPrice}}</td>
                   <td>{{stock.TotalBalance}}</td>
@@ -78,7 +72,7 @@
                           <has-error :form="form" field="Quantity"></has-error>
                       </div>
                       <div class="form-group col-md-4">
-                          <label>UnitPrice</label>
+                          <label>Unit Price</label>
                           <input v-model="form.UnitPrice" type="number" name="UnitPrice"
                               placeholder="Enter UnitPrice"
                               class="form-control" :class="{ 'is-invalid': form.errors.has('UnitPrice') }">
@@ -92,28 +86,28 @@
                           <has-error :form="form" field="Discount"></has-error>
                       </div>
                       <div class="form-group col-md-3">
-                          <label>SupplierId</label>
+                          <label>Supplier Id</label>
                           <input v-model="form.SupplierId" type="text" name="SupplierId"
                               placeholder="Enter SupplierId"
                               class="form-control" :class="{ 'is-invalid': form.errors.has('SupplierId') }">
                           <has-error :form="form" field="SupplierId"></has-error>
                       </div>
                       <div class="form-group col-md-6">
-                          <label>InvoiceNo</label>
+                          <label>Invoice No</label>
                           <input v-model="form.InvoiceNo" type="text" name="InvoiceNo"
                               placeholder="Enter InvoiceNo"
                               class="form-control" :class="{ 'is-invalid': form.errors.has('InvoiceNo') }">
                           <has-error :form="form" field="InvoiceNo"></has-error>
                       </div>
                       <div class="form-group col-md-6">
-                          <label>SellingPrice</label>
+                          <label>Selling Price</label>
                           <input v-model="form.SellingPrice" type="number" name="SellingPrice"
                               placeholder="Enter SellingPrice"
                               class="form-control" :class="{ 'is-invalid': form.errors.has('SellingPrice') }"> 
                           <has-error :form="form" field="SellingPrice"></has-error>
                       </div> 
                       <div class="form-group col-md-6">
-                          <label>TotalBalance</label>
+                          <label>Total Balance</label>
                           <input v-model="form.TotalBalance" type="number" name="TotalBalance"
                               placeholder="Enter TotalBalance"
                               class="form-control" :class="{ 'is-invalid': form.errors.has('TotalBalance') }">

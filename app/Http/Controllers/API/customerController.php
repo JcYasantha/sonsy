@@ -26,6 +26,14 @@ class customerController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'Fname' => 'required|string|max:191',
+            'Lname' => 'required|string|max:191',
+            'No' => 'required|numeric|min:11',
+            'City' => 'required|string|max:191',
+            'Street' => 'required|string|max:191',
+            'NicNo' => 'required|string|min:10',
+        ]);
         return Customer::create([
             'Fname' => $request['Fname'],
             'Lname' => $request['Lname'],
