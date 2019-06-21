@@ -2829,6 +2829,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     var _ref;
@@ -2846,13 +2847,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       Branch: '',
       Bank: '',
       CustomerID: '',
-      remember: false
-    })), _defineProperty(_ref, "form2", new Form({
-      CustomerID: '',
-      Customername: '',
-      Totaloutstanding: '',
-      Payment: '',
-      Setledoutstanding: '',
       remember: false
     })), _ref;
   },
@@ -46812,6 +46806,25 @@ var render = function() {
                           },
                           [_vm._v("Enter")]
                         )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary btn-sm",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#postdate"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.customerInfo(cus.id)
+                              }
+                            }
+                          },
+                          [_vm._v("Enter")]
+                        )
                       ])
                     ])
                   })
@@ -47248,7 +47261,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Name")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Payment")])
+      _c("th", [_vm._v("Payment")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Postdated Cheque")])
     ])
   },
   function() {
@@ -65498,8 +65513,8 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\Project1\clone\sonsy\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\Project1\clone\sonsy\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\Project_2\sonsy\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\Project_2\sonsy\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
