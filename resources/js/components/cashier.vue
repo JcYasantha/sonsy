@@ -17,13 +17,14 @@
                     <th>Customer ID</th>
                     <th>Name</th>
                     <th>Payment</th>
+                    <th>Postdated Cheque</th>
                   </tr>
                   
                   <tr v-for="cus in customers" :key="cus.id">
                   <td>{{cus.id}}</td>
                   <td>{{cus.Fname}} {{cus.Lname}}</td>
                   <td><button @click="customerInfo(cus.id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#invoice">Enter</button></td>
-
+                  <td><button @click="customerInfo(cus.id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#postdate">Enter</button></td>
                   </tr>
                   
                   
@@ -54,7 +55,7 @@
                   <has-error :form="form" field="chequeNo"></has-error>
                 </div>
                  <div class="form-group">
-                  <input v-model="form.Chaquedate" type="date" name="Chaquedate"
+                  <input v-model="form.Chaquedate" type="date" name="Chaquedate" 
                     placeholder="Cheque Date"
                     class="form-control" :class="{ 'is-invalid': form.errors.has('Chaquedate') }">
                   <has-error :form="form" field="Chaquedate"></has-error>
@@ -154,14 +155,7 @@
               CustomerID:'',
               remember: false
            }),
-           form2: new Form({
-              CustomerID:'',
-              Customername:'',
-              Totaloutstanding:'',
-              Payment:'',
-              Setledoutstanding:'',
-              remember: false
-           })
+           
 
           }
         },
