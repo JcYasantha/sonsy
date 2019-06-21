@@ -2049,12 +2049,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2276,10 +2270,24 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     AddCustomer: function AddCustomer() {
-      this.form.post('api/customer');
+      var _this = this;
+
+      /* this.form.post('api/customer')
+      .then(({data}) => (this.form.reset())); */
+      this.form.post('api/customer').then(function () {
+        Swal.fire('Addedd!', 'Customer Added', 'success');
+
+        _this.form.reset();
+      })["catch"](function () {});
     },
     AddSupplier: function AddSupplier() {
-      this.form2.post('api/supplier');
+      var _this2 = this;
+
+      this.form2.post('api/supplier').then(function () {
+        Swal.fire('Addedd!', 'Supplier Added', 'success');
+
+        _this2.form2.reset();
+      })["catch"](function () {});
     }
   }
 });
@@ -44840,21 +44848,15 @@ var render = function() {
                         _c("tr", [
                           _c("th", [_vm._v("ID")]),
                           _vm._v(" "),
-                          _c("th", [_vm._v("ItemName")]),
+                          _c("th", [_vm._v("Item Name")]),
                           _vm._v(" "),
-                          _c("th", [_vm._v("UnitPrice")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("Discount")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("SupplierId")]),
-                          _vm._v(" "),
-                          _c("th", [_vm._v("InvoiceNo")]),
+                          _c("th", [_vm._v("Unit Price")]),
                           _vm._v(" "),
                           _c("th", [_vm._v("Quantity")]),
                           _vm._v(" "),
-                          _c("th", [_vm._v("SellingPrice")]),
+                          _c("th", [_vm._v("Selling Price")]),
                           _vm._v(" "),
-                          _c("th", [_vm._v("TotalBalance")]),
+                          _c("th", [_vm._v("Total Balance")]),
                           _vm._v(" "),
                           _vm.$gate.isAdmin()
                             ? _c("th", [_vm._v("Modify")])
@@ -44868,12 +44870,6 @@ var render = function() {
                             _c("td", [_vm._v(_vm._s(stock.ItemName))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(stock.UnitPrice))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(stock.Discount))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(stock.SupplierId))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(stock.InvoiceNo))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(stock.Quantity))]),
                             _vm._v(" "),
@@ -45064,7 +45060,7 @@ var render = function() {
                         "div",
                         { staticClass: "form-group col-md-4" },
                         [
-                          _c("label", [_vm._v("UnitPrice")]),
+                          _c("label", [_vm._v("Unit Price")]),
                           _vm._v(" "),
                           _c("input", {
                             directives: [
@@ -45156,7 +45152,7 @@ var render = function() {
                         "div",
                         { staticClass: "form-group col-md-3" },
                         [
-                          _c("label", [_vm._v("SupplierId")]),
+                          _c("label", [_vm._v("Supplier Id")]),
                           _vm._v(" "),
                           _c("input", {
                             directives: [
@@ -45202,7 +45198,7 @@ var render = function() {
                         "div",
                         { staticClass: "form-group col-md-6" },
                         [
-                          _c("label", [_vm._v("InvoiceNo")]),
+                          _c("label", [_vm._v("Invoice No")]),
                           _vm._v(" "),
                           _c("input", {
                             directives: [
@@ -45248,7 +45244,7 @@ var render = function() {
                         "div",
                         { staticClass: "form-group col-md-6" },
                         [
-                          _c("label", [_vm._v("SellingPrice")]),
+                          _c("label", [_vm._v("Selling Price")]),
                           _vm._v(" "),
                           _c("input", {
                             directives: [
@@ -45294,7 +45290,7 @@ var render = function() {
                         "div",
                         { staticClass: "form-group col-md-6" },
                         [
-                          _c("label", [_vm._v("TotalBalance")]),
+                          _c("label", [_vm._v("Total Balance")]),
                           _vm._v(" "),
                           _c("input", {
                             directives: [
@@ -45748,6 +45744,8 @@ var render = function() {
                   attrs: {
                     type: "text",
                     name: "PhoneNO",
+                    pattern: "[0]{1}[1-9]{9}",
+                    title: "enter to correct pattern",
                     placeholder: "Enter PhoneNO"
                   },
                   domProps: { value: _vm.form2.PhoneNO },
