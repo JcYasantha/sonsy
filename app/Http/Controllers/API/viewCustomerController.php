@@ -15,7 +15,7 @@ class viewCustomerController extends Controller
      */
     public function index()
     {
-        return Customer::latest()->paginate(10);
+        return Customer::latest()->paginate(5);
     }
 
     /**
@@ -37,7 +37,7 @@ class viewCustomerController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**

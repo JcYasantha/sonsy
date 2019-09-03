@@ -16,7 +16,10 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('photo')->default('https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg');;
             $table->string('email')->unique();
+            $table->string('NIC')->unique()->nullable();
+            $table->integer('Telephone')->nullable();
             $table->enum('type', ['StockKeeper', 'Cashier','Accountant','Admin']);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
