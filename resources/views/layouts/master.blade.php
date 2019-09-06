@@ -45,7 +45,7 @@
       <div class="sidebar">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a href="#" class="nav-link sideLink px-2 pt-2" style="border-bottom:0.5px solid #62666d;"><img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg" alt="Avatar" class="avatar shadow"><span class="text"><span class="text pl-2">{{ Auth::user()->name }}</span></a>
+            <a href="#" class="nav-link sideLink px-2 pt-2" style="border-bottom:0.5px solid #62666d;"><img src="/img/profile/{{ Auth::user()->photo}}" alt="Avatar" class="avatar shadow"><span class="text"><span class="text pl-2">{{ Auth::user()->name }}</span></a>
           </li>
           <!-- <div class="dropdown-divider bg-mattGray"></div> -->
           <li class="nav-item">
