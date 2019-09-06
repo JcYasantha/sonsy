@@ -96,6 +96,7 @@ const app = new Vue({
     },
     methods:{
       searchit(){
+        console.log('searching.........');
         Fire.$emit('searching');
       }
     }

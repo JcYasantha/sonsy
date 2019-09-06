@@ -35,8 +35,7 @@
                         <center>
                             <a href="#">
                             <button type="button" class="btn btn-primary" data-toggle="modal" @click="users(view.id);totalOutstanding(view.id);" data-target="#viewdetails">
-                               view    
-                            <i class="material-icons icon">my_location</i>
+                               View  
                             </button>    
                           
                            

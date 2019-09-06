@@ -93,6 +93,30 @@ class UserController extends Controller
 
        $user->update($request->all()); 
     }
+    public function updatePassword(Request $request){
+        $user=auth('api')->user();
+
+        $this->validate($request, [
+            'oldPassword'     => 'required',
+            'newPassword'     => 'required|min:6',
+            'confirmPassword' => 'required|same:newPassword',
+        ]);
+        $data = $request->all();
+     
+        $user = User::find(auth()->user()->id);
+        if(!Hash::check($data['oldPassword'], $user->password)){
+             return back()
+                        ->with('error','The specified password does not match the database password');
+        }else{
+            $request->merge(['password' => Hash::make($request['confirmPassword'])]);
+        }
+        $user->update($request->all()); 
+
+    }
+
+
+
+
     public function profile(){
         return Auth('api')->user();
     }
