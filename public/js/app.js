@@ -4073,6 +4073,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     photo: "";
@@ -4088,7 +4089,8 @@ __webpack_require__.r(__webpack_exports__);
         oldPassword: "",
         newPassword: "",
         confirmPassword: "",
-        password: ""
+        password: "",
+        error: ''
       })
     };
   },
@@ -4157,8 +4159,8 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function () {
         Swal.fire({
           type: "error",
-          title: "Invalid input ",
-          text: "Update falier"
+          title: "Invalid password",
+          text: "Enter correct password"
         });
       });
     }
@@ -50511,7 +50513,7 @@ var render = function() {
                       _vm._v("Telephone Number")
                     ]),
                     _vm._v(" "),
-                    _vm.form.Telephone == ""
+                    _vm.form.Telephone == null
                       ? _c("div", [
                           _c(
                             "span",
@@ -50535,7 +50537,7 @@ var render = function() {
                       _vm._v("NIC")
                     ]),
                     _vm._v(" "),
-                    _vm.form.NIC == ""
+                    _vm.form.NIC == null
                       ? _c("div", [
                           _c(
                             "span",
@@ -50805,6 +50807,10 @@ var render = function() {
                           _vm._v(" "),
                           _c("has-error", {
                             attrs: { form: _vm.form, field: "oldPassword" }
+                          }),
+                          _vm._v(" "),
+                          _c("has-error", {
+                            attrs: { form: _vm.form, field: "error" }
                           })
                         ],
                         1

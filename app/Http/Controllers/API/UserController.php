@@ -65,14 +65,18 @@ class UserController extends Controller
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,
-            'password'=>'sometimes|required|string|min:6'
+            
+            
         ]);
 
 
 
         $currentPhoto=$user->photo;
         if($request->photo!=$currentPhoto){
-            $name=time().'.'.explode('/',explode(':',substr($request->photo,0,strpos
+            $extention=explode('/',explode(':',substr($request->photo,0,strpos
+            ($request->photo,';')))[1])[1];
+            if($extention=='jpeg'||$extention=='jpg'||$extention=='png'||$extention=='gif'){
+                $name=time().'.'.explode('/',explode(':',substr($request->photo,0,strpos
             ($request->photo,';')))[1])[1];
             \Image::make($request->photo)->save(public_path('img/profile/').$name);
             
@@ -83,6 +87,9 @@ class UserController extends Controller
              if(file_exists($userPhoto)){
                 @unlink($userPhoto);
              }
+
+            }
+            
 
              
 
@@ -97,16 +104,16 @@ class UserController extends Controller
         $user=auth('api')->user();
 
         $this->validate($request, [
-            'oldPassword'     => 'required',
-            'newPassword'     => 'required|min:6',
+        
+            'oldPassword' =>'required|string|min:6|max:20',
+            'newPassword'     => 'required|string|min:6|max:20',
             'confirmPassword' => 'required|same:newPassword',
         ]);
         $data = $request->all();
      
         $user = User::find(auth()->user()->id);
         if(!Hash::check($data['oldPassword'], $user->password)){
-             return back()
-                        ->with('error','The specified password does not match the database password');
+            return response()->json(['errors' => ['input password in not match with current password']], 400);
         }else{
             $request->merge(['password' => Hash::make($request['confirmPassword'])]);
         }

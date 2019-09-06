@@ -20,7 +20,7 @@
               <div class="col-sm-4">
                 <div class="description-block">
                   <h5 class="description-header">Telephone Number</h5>
-                  <div v-if="form.Telephone==''">
+                  <div v-if="form.Telephone==null">
                     <span class="description-text text-white">Not available</span>
                   </div>
                   <div v-else>
@@ -34,7 +34,7 @@
                 <div class="description-block">
                   <h5 class="description-header">NIC</h5>
 
-                  <div v-if="form.NIC==''">
+                  <div v-if="form.NIC==null">
                     <span class="description-text text-white">Not available</span>
                   </div>
                   <div v-else>
@@ -168,6 +168,7 @@
                         :class="{'is-invalid':form.errors.has('oldPassword') }"
                       />
                       <has-error :form="form" field="oldPassword"></has-error>
+                      <has-error :form="form" field="error"></has-error>
                     </div>
                   </div>
                   <!--new password -->
@@ -228,6 +229,7 @@
 export default {
   data() {
     photo: "";
+    
     return {
       form: new Form({
         name: "",
@@ -240,7 +242,9 @@ export default {
         newPassword: "",
         confirmPassword: "",
         password:"",
-
+        error:'',
+       
+        
       })
     };
   },
@@ -306,8 +310,9 @@ export default {
         .catch(() => {
           Swal.fire({
             type: "error",
-            title: "Invalid input ",
-            text: "Update falier"
+            title: "Invalid password",
+            text: "Enter correct password",
+            
           });
         });
     }
