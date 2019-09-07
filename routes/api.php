@@ -27,6 +27,8 @@ Route::get('totalOutstanding/{id}', 'API\totalOutstandingController@show');
 Route::get('loadOutstanding/{id}', 'API\viewinvoiceController@show');
 Route::apiResources(['stock'=>'API\OrderController']);
 Route::apiResources(['invoice'=>'API\OrderController']);
+Route::apiResources(['cancelOrder'=>'API\cancelOrderController']);
+//Route::apiResources(['invoiceEdit'=>'API\OrderController@te']);
 Route::apiResources(['savePayment'=>'API\viewinvoiceController']);
 //Route::post('invoice',array('as' => 'invoice', 'uses' => 'API\OrderController@store'));
 Route::apiResources(['invoiceget'=>'API\invoiceCntroller']);
