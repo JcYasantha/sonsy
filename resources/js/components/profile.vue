@@ -120,11 +120,13 @@
                     <div class="col-sm-10">
                       <input
                         v-model="form.Telephone"
-                        type="integer"
+                        type="number"
                         class="form-control"
                         id="Telephone"
                         placeholder="Telephone Number"
+                        :class="{'is-invalid':form.errors.has('Telephone') }"
                       />
+                      <has-error :form="form" field="Telephone"></has-error>
                     </div>
                   </div>
                   <div class="form-group">
@@ -279,6 +281,8 @@ export default {
             text: "Update falier"
           });
         });
+         
+        
     },
     updateProfilePic(e) {
       let file = e.target.files[0];
@@ -315,6 +319,7 @@ export default {
             
           });
         });
+       
     }
   }
 };
