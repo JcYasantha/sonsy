@@ -46,8 +46,8 @@ window.Toast = Toast;
 window.Form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
-
-window.Fire = new Vue();
+Vue.component('pagination',require('laravel-vue-pagination'));
+window.Fire = new Vue();  
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
@@ -61,6 +61,7 @@ let routes = [
     { path: '/addPeople', component:  require('./components/addPeople.vue').default },
     { path: '/viewCustomer', component:  require('./components/viewCustomer.vue').default },
     { path: '/cashier', component:  require('./components/cashier.vue').default },
+    { path: '/profile', component:  require('./components/profile.vue').default },
   ]
 
 const router = new VueRouter({
@@ -113,6 +114,7 @@ const app = new Vue({
     },
     methods:{
       searchit(){
+        console.log('searching.........');
         Fire.$emit('searching');
       }
     }

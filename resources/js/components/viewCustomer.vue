@@ -22,7 +22,7 @@
                      <th>View Indvoices and other details </th>
                   </tr>
 
-                  <tr v-for="view in views" :key="view.id">
+                  <tr v-for="view in views.data" :key="view.id">
                     <td>{{view.id}}</td>
                     <td>{{view.Fname}}</td>
                     <td>{{view.Lname}}</td>
@@ -35,8 +35,7 @@
                         <center>
                             <a href="#">
                             <button type="button" class="btn btn-primary" data-toggle="modal" @click="users(view.id);totalOutstanding(view.id);" data-target="#viewdetails">
-                               view    
-                            <i class="material-icons icon">my_location</i>
+                               View  
                             </button>    
                           
                            
@@ -51,6 +50,13 @@
               </div>
               <!-- /.card-body -->
             </div>
+            <div class="card-footer">
+                <pagination :data="views" 
+                @pagination-change-page="getResults">
+                <span slot="prev-nav">&lt; Previous</span>
+                  <span slot="next-nav">Next &gt;</span>
+                </pagination> 
+              </div>
             <!-- /.card -->
           </div>
         </div>
@@ -93,6 +99,7 @@
                 </tbody></table>
               </div>
               <!-- /.card-body -->
+              
               <div ></div>
       </div>
       <div class="modal-footer">
@@ -115,8 +122,14 @@
 
         },
         methods:{
+        getResults(page = 1) {
+              axios.get('api/View?page=' + page)
+                .then(response => {
+                  this.views = response.data;
+                });
+            },
         loadViewCustomer(){
-          axios.get("api/View").then(({data})=>(this.views=data.data));
+          axios.get("api/View").then(({data})=>(this.views=data));
         },
         users(id){
           //window.alert(id);
@@ -128,10 +141,7 @@
         }
 
       },
-
-
-
-        created(){
+      created(){
           this.loadViewCustomer();
         }
     }

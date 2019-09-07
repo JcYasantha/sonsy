@@ -31,8 +31,9 @@
           <a href="#" class="nav-link sideMenuToggler tog" style="margin-left:78px;"><span class="navbar-toggler-icon"></span></a>
         </li>
         <li class="nav-item">
+        <!-- search form -->
           <div class="input-group input-group-sm mt-1">
-            <input type="search" class="form-control form-control-navbar" @keyup="searchit" v-model="search" placeholder="Search" aria-label="Search">
+            <input type="search" class="form-control form-control-navbar" @keyup.enter="searchit" v-model="search" placeholder="Search" aria-label="Search">
             <div class="input-group-append">
               <button class="btn btn-navbar" @click="searchit">
               <i class="material-icons icon">search</i>
@@ -48,7 +49,7 @@
       <div class="sidebar">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a href="#" class="nav-link sideLink px-2 pt-2" style="border-bottom:0.5px solid #62666d;"><img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg" alt="Avatar" class="avatar shadow"><span class="text"><span class="text pl-2">{{ Auth::user()->name }}</span></a>
+            <a href="#" class="nav-link sideLink px-2 pt-2" style="border-bottom:0.5px solid #62666d;"><img src="/img/profile/{{ Auth::user()->photo}}" alt="Avatar" class="avatar shadow"><span class="text"><span class="text pl-2">{{ Auth::user()->name }}</span></a>
           </li>
           <!-- <div class="dropdown-divider bg-mattGray"></div> -->
           <li class="nav-item">
@@ -84,7 +85,7 @@
           </li>
           @endcan
           <li class="nav-item">
-            <router-link to="/test2" class="nav-link sideLink px-2"><i class="material-icons icon">settings</i><span class="text">Settings</span></router-link>
+            <router-link to="/profile" class="nav-link sideLink px-2"><i class="material-icons icon">settings</i><span class="text">Profile</span></router-link>
           </li>
           <li class="nav-item">
             <router-link to="#" class="nav-link sideLink sideMenuToggler px-2"><i class="material-icons icon">view_list</i><span class="text">Resize</span></router-link>

@@ -59,6 +59,78 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function updateProfile(Request $request){
+        $user=auth('api')->user();
+
+        $this->validate($request,[
+            'name' => 'required|string|max:191',
+            'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,
+            'Telephone' => 'regex:/^0([0-9\s\-\+\(\)]*)$/|min:10',
+            
+        ]);
+
+
+
+        $currentPhoto=$user->photo;
+        if($request->photo!=$currentPhoto){
+            $extention=explode('/',explode(':',substr($request->photo,0,strpos
+            ($request->photo,';')))[1])[1];
+            if($extention=='jpeg'||$extention=='jpg'||$extention=='png'||$extention=='gif'){
+                $name=time().'.'.explode('/',explode(':',substr($request->photo,0,strpos
+            ($request->photo,';')))[1])[1];
+            \Image::make($request->photo)->save(public_path('img/profile/').$name);
+            
+             $request->merge(['photo'=>$name]);
+
+                $userPhoto=public_path('img/profile/').$currentPhoto;
+
+             if(file_exists($userPhoto)){
+                @unlink($userPhoto);
+             }
+
+            }
+            
+
+             
+
+        }
+        if(!empty($request->password)){
+           $request->merge(['password' => Hash::make($request['password'])]);
+        }
+
+       $user->update($request->all()); 
+    }
+    public function updatePassword(Request $request){
+        $user=auth('api')->user();
+
+        $this->validate($request, [
+        
+            'oldPassword' =>'required|string|min:6|max:20',
+            'newPassword'     => 'required|string|min:6|max:20',
+            'confirmPassword' => 'required|same:newPassword',
+        ]);
+        $data = $request->all();
+     
+        $user = User::find(auth()->user()->id);
+        if(!Hash::check($data['oldPassword'], $user->password)){
+            return response()->json(['errors' => ['input password in not match with current password']], 400);
+        }else{
+            $request->merge(['password' => Hash::make($request['confirmPassword'])]);
+        }
+        $user->update($request->all()); 
+
+    }
+
+
+
+
+    public function profile(){
+        return Auth('api')->user();
+    }
+
+
+
+
     public function show($id)
     {
         //

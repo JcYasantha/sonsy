@@ -18,7 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResources(['outstandings' => 'API\CashierController']);
-
+Route::get('profile','API\userController@profile');
+Route::put('profile','API\userController@updateProfile');
+Route::put('profileChangePassword','API\userController@updatePassword');
 Route::get('findStock','API\OrderController@search');
 Route::get('customerID/{CustomerID}', 'API\customerController@show');
 Route::get('getItems/{InvoiceNo}', 'API\invoiceCntroller@show');
