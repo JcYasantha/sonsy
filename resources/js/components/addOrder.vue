@@ -5,15 +5,14 @@
                 <div class="card">
                     <div class="card-header"><b>Add Order</b></div>
                     <div class="card-body">
-                        <form @submit.prevent="saveInvoice">
+                        <form @submit.prevent>
                             <div class="row">
                                 <div class="col-lg-6 col-sm-6"> 
                                      <div class="form-group" >
-                                        <label for="customer">Select the Customer</label>
-                                        <select id="customername" class="form-control customername" name="id" v-model="form.id" required>
-                                                    <!-- <option value="0" selected="true" disabled="true" >select the customer</option> -->
-                                                         <option v-for="customer in customers" :key="customer.id" v-bind:value="customer.id">{{customer.Fname}}</option>       
-                                                </select>
+                                        <select2 name="model1[]" v-model.number="form.id" style="min-width:100%">
+                                            <option disabled value="0">Select a Customer</option>
+                                            <option v-for="customer in customers" :key="customer.id" v-bind:value="customer.id">{{customer.Fname}} {{customer.Lname}} | {{customer.City}},{{customer.Street}}</option> 
+                                        </select2>
                                     </div>
                                     <br><br><br>
                                 </div>
@@ -26,43 +25,107 @@
                                 </div>-->
                             </div>
                             <div class="row">
-                                <table class="table table-bordered" id="protable">
-                                    <thead>
+                                <table class="table" id="protable">
+                                    <thead class="thead-light">
                                         <th>Item Name</th>
                                         <th>Quantity</th>
                                         <th>Amount</th>
                                         <th>Total</th>
-                                        <th style="text-align:center;"><a href="#" class="addrow" @click="addNewRow"><i class="material-icons icon">add_box</i></a></th>
+                                        <th style="text-align:center;"></th>
                                     </thead>
                                     <tbody>
                                         <tr v-for="(invoice_product, k) in invoice_products" :key="k">
                                             <td>
-                                                <select v-model="invoice_product.itemname" class="form-control itemname" @change="calculateLineTotal(invoice_product)" required>
-                                                    <!-- <option value="0" selected="true" disabled="true">select</option> -->
-                                                         <option v-for="stock in stocks" :key="stock.ItemNo" :value="{ id: stock.ItemName, SellingPrice: stock.SellingPrice }" name="itemname[]">{{stock.ItemName}}</option>       
+                                                <select name="model2[]" v-model.number="invoice_product.itemname" class="form-control itemname" @input="calculateLineTotal(k,invoice_product)" required>
+                                                        <option disabled selected value="0">Item</option>
+                                                         <option v-for="stock in stocks" :key="stock.ItemNo" v-bind:value="{id:stock.ItemName, SellingPrice:stock.SellingPrice, Quantity:stock.Quantity, item:stock.ItemName}" name="itemname[]">{{stock.ItemName}}</option>       
                                                 </select>
                                                 
                                             </td>
-                                            <td><input type="number" required min="0" max="invoice_product.itemname.Quantity" step="1" v-model="invoice_product.quantity" value="{invoice_product.itemname.qty}" class="form-control qty" @change="calculateLineTotal(invoice_product)"></td>
-                                            <td><input readonly required type="number" min="0" step="1" v-model="invoice_product.itemname.SellingPrice" class="form-control amount" @change="calculateLineTotal(invoice_product)"></td>
+                                            <td><input type="number" id="lkd" required min="0" max="invoice_product.itemname.Quantity" step="1" name="test" v-model="invoice_product.quantity" class="form-control qty" @input="calculateLineTotal(k,invoice_product)"></td>
+                                            <td><input readonly required type="number" min="0" step="1" v-model="invoice_product.itemname.SellingPrice" class="form-control amount" @input="calculateLineTotal(k,$event)"></td>
                                             <td><input readonly required class="form-control total" type="number" min="0" step=".01" v-model="invoice_product.line_total" /></td>
                                             <td style="text-align:center;"><a href="#" class="remove" style="color:red;" @click="deleteRow(k, invoice_product)"><i class="material-icons icon">delete</i></a></td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td style="border:none"></td>
+                                            <td style="border:none"><a href="#" class="addrow" @click="addNewRow"><i class="material-icons icon">add_box</i></a></td>
                                             <td style="border:none"></td>
                                             <td style="border:none">Total<b style="float:right">(Rs)</b></td>
                                             <td><b class="total">{{form.Outstanding}}</b></td>
                                             <td style="border:none"></td>
                                         </tr>
+                                        
                                     </tfoot>                                   
                                 </table>
-                                <button class="btn btn-success" id="saveInvoice" style="float:right;">Save</button>
+                                <div class="form-group">
+                                    <button class="btn btn-success" v-show="editMode" @click="saveInvoice()" id="saveInvoice" data-toggle="modal" data-target="#viewInvoice">View Invoice</button>
+                                    <button class="btn btn-success" v-show="!editMode" @click="editInvoice()" id="saveInvoice" data-toggle="modal" data-target="#viewInvoice">Edit Invoice</button>
+                                </div>
                             </div>
                         </form>
                     </div>
+                </div>
+
+                <!-- //////////////////////////////////////////////////////////// -->
+                                <!-- modal to view the invoice -->
+                <!-- //////////////////////////////////////////////////////////// -->
+
+                <div class="modal fade" id="viewInvoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Invoice</h5>
+                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                        <span aria-hidden="true">&times;</span>
+                        </button> -->
+                    </div>
+                    <div class="modal-body">
+                        <div class="card" id="printMe">
+                    <div class="card-body">
+                        <h3 style="text-align: center;">SONSY TRADING</h3>
+                    <h5 style="text-align: center;">Invoice No:{{InvoiceNo.id}}</h5>
+                    <h6 style="text-align: center;">Date:{{InvoiceNo.created_at}}</h6><br><br>
+                        <input type="hidden" v-model="InvoiceNo.CustomerID" class="form-control">
+                        <h6><strong>Customer:</strong></h6>
+                        <p>{{customerDetails.Fname}} {{customerDetails.Lname}}<br>
+                        {{customerDetails.City}}<br>
+                        {{customerDetails.Street}}<br>
+                        Tel:{{customerDetails.No}}</p>
+                        <div class="row ">
+                                <table class="table" id="protable">
+                                    <thead class="thead-light">
+                                        <th>Item Name</th>
+                                        <th>Quantity</th>
+                                        <th>Amount</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in getItems" :key="item.ID">
+                                            <td>{{item.Items}}</td>
+                                            <td>{{item.Quantity}}</td>
+                                            <td>{{item.Amount}}</td>
+                                        </tr>
+                                    </tbody> 
+                                    <tfoot>
+                                        <tr>
+                                            <td style="border:none"></td>
+                                            <td style="border:none">Total<b style="float:right">(Rs)</b></td>
+                                            <td><b class="total">{{InvoiceNo.Outstanding}}</b></td>
+                                        </tr>
+                                    </tfoot>                                  
+                                </table>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"  @click="editmode()">Edit Invoice</button>
+                        <button type="button" class="btn btn-primary" style="float:right;" @click="printme()">Print</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" @click="cancelOrder()">Cancel Order</button>
+                    </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -70,24 +133,38 @@
 </template>
 
 <script>
+    import Select2 from './Select2.vue';
+    $(document).ready(function(){
+        $('#saveInvoice').click(function(){
+            $('#viewInvoice').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        });
+    });
     export default {
         data(){
             return{
+                editMode: true,
                 stocks : {},
                 customers:{},
                 InvoiceNo:{},
+                customerDetails:{},
+                getItems:{},
                 invoice_products: [{
                     itemname: '',
                     quantity: '',
                     amount: '',
                     line_total:0,
                 }],
-            form:{
-                id:0,
-                Outstanding: 0,
-                }
-            }
+                form:{
+                    id:0,
+                    Outstanding: 0,
+                },
+                output: null
+            }  
         },
+        
         methods:{
             loadStock(){
                 axios.get("api/stock").then(({data}) => (this.stocks = data));
@@ -118,8 +195,21 @@
                 }
                 this.calculateTotal();
             },
-            calculateLineTotal(invoice_product) {
+            calculateLineTotal(index,invoice_product) {
+                //console.log(index)
+                var idx = this.invoice_products.indexOf(invoice_product);
                 var total = parseFloat(invoice_product.quantity) * parseFloat(invoice_product.itemname.SellingPrice);
+                //console.log(total)
+                if(invoice_product.itemname.Quantity < invoice_product.quantity){
+                     Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Quantity exceed the stock of '+ invoice_product.itemname.item,
+                        }).then((result) => {
+                            //$("#lkd").val("");
+                            this.invoice_products.splice(idx, 1);
+                        })        
+                }
                 if (!isNaN(total)) {
                     invoice_product.line_total = total.toFixed(2);
                 }
@@ -135,7 +225,6 @@
                 }, 0);
                 this.form.Outstanding = subtotal.toFixed(2);
             },
-        
             saveInvoice(){
                 console.log(JSON.stringify(this.invoice_products));
                 let formD = {
@@ -147,8 +236,12 @@
                 
                 axios.post('api/invoice', {dataD, formD})
                 .then( res => {
-                    this.$router.push('printInvoice') 
-                    console.log(res)
+                    //this.$router.push('printInvoice')
+                    this.invoiceLastId();
+                    //console.log(res)
+                    this.customerInfo();
+                    this.getItem(res.data);
+                    
                 })
                 .catch( e => {
                     console.log(e)
@@ -165,18 +258,100 @@
                 //this.form.post('api/invoice');
                // this.form.post('api/outstanding');
             },
+            editInvoice(){
+                console.log(JSON.stringify(this.invoice_products));
+                let formD = {
+                    cli: this.form
+                }
+                let dataD = {
+                    inc: this.invoice_products
+                }
+                
+                axios.put('api/invoice/' + this.InvoiceNo.id , {dataD, formD})
+                .then( res => {
+                    this.invoiceLastId();
+                    //console.log(res)
+                    this.customerInfo();
+                    console.log(res.data)
+                    this.getItem(res.data);
+                    
+                })
+                .catch( e => {
+                    console.log(e)
+                })
+            },
             printme(){
-                window.print();
+                this.$htmlToPaper('printMe', () => {
+                    location.reload(); 
+                });
+            },
+            invoiceLastId(){
+                axios.get("api/invoiceget").then(({data}) => (this.InvoiceNo = data));
+            },
+            customerInfo(){
+                axios.get("api/customerID/"+this.form.id).then(({data}) => (this.customerDetails = data));
+            },
+            getItem(num){
+                axios.get("api/getItems/"+num).then(({data}) => (this.getItems = data));
+            },
+            cancelOrder(){
+                console.log(JSON.stringify(this.invoice_products));
+                let formD = {
+                    cli: this.form
+                }
+                let dataD = {
+                    inc: this.invoice_products
+                }
+                Swal.fire({
+                title: 'Cancel the Order?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+                }).then((result) => {
+                if (result.value) {
+                    axios.put('api/cancelOrder/' + this.InvoiceNo.id , {dataD, formD})
+                    .then( res => {
+                        Swal.fire(
+                        'Canceled!',
+                        'Order has been canceled.',
+                        'success'
+                        ).then((result) => {
+                            location.reload();
+                        })
+                    })
+                    .catch( e => {
+                        console.log(e)
+                    })
+                    
+                    
+                }else{
+                    $('#viewInvoice').modal('show')   
+                }
+                })
+                
+            },
+            editmode(){
+                this.editMode = false;
             }
         },
         created() { 
             this.loadStock();
             this.loadCustomer();
-            //this.invoiceLastId();
-        }
+            this.editMode = true;
+        },
+        components:{
+            'select2': Select2
+        },
     }
 </script>
 <style>
+    .modal-lg {
+        max-width: 65%;
+    }
     #del{
         color: crimson;
     }

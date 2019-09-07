@@ -110,7 +110,38 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($id);
+        $invoice_products = json_decode($request->getContent('dataD','formD'), true);
+        $formData = $invoice_products['formD'];
+        $pro_info = $invoice_products['dataD'];
+
+        $invoice = Invoice::findorFail($id);
+        $invoice-> CustomerID = $formData['cli']['id'];
+        $invoice-> Outstanding= $formData['cli']['Outstanding'];
+        $invoice->update();
+
+        $outstanding = Outstanding_Payments::where('InvoiceNo', $id)->first();
+        $outstanding -> CustomerID = $formData['cli']['id'];
+        $outstanding -> InvoiceValue = $formData['cli']['Outstanding'];
+        $outstanding -> Balance = $formData['cli']['Outstanding'];
+        $outstanding->update();
+        //DB::update('update outstanding__payments set CustomerID = ? , InvoiceValue = ? , Balance = ? where InvoiceNo=?',$formData['cli']['id'], $formData['cli']['Outstanding'] , $formData['cli']['Outstanding'] , $id);
+        $items = Item::where('InvoiceNo', $id);
+        $items -> delete();
+        foreach ($pro_info as $inv) {
+            foreach ($inv as $c) {
+                Item::create([
+                    'InvoiceNo' => $id,
+                    'Items' => $c['itemname']['id'],
+                    'Quantity' => $c['quantity'],
+                    'Amount' => $c['line_total'],
+                ]);
+                $itemQuantity = Stock::select('Quantity')
+                    ->where('ItemName','=', $c['itemname']['id'])
+                    ->first();
+                DB::update('update stocks set Quantity = ? where ItemName = ?',[$itemQuantity['Quantity'] - $c['quantity'],$c['itemname']['id']]);
+            }
+        }
+        return $id;
     }
 
     /**
