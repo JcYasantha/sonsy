@@ -117,5 +117,8 @@ const app = new Vue({
         console.log('searching.........');
         Fire.$emit('searching');
       }
+    },
+    created(){
+      console.log(window.user)
     }
 });
