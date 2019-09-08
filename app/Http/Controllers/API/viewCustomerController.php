@@ -15,7 +15,7 @@ class viewCustomerController extends Controller
      */
     public function index()
     {
-        return Customer::latest()->paginate(5);
+        return Customer::latest()->paginate(10);
     }
 
     /**
@@ -28,6 +28,22 @@ class viewCustomerController extends Controller
     {
         //
     }
+    public function findUser()
+    {
+        if($search=\Request::get('q')){
+            $users=Customer::where(function($query) use ($search){
+                $query->where('Fname','LIKE',"%$search%")->orWhere('Lname','LIKE',"%$search%")->orWhere('City','LIKE',"%$search%")->orWhere('No','LIKE',"%$search%")->orWhere('Street','LIKE',"%$search%")->orWhere('NicNo','LIKE',"%$search%");
+            })->paginate(10);
+        }
+        return $users;
+    }
+
+  
+
+
+
+
+
 
     /**
      * Display the specified resource.
