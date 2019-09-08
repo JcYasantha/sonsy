@@ -30,17 +30,9 @@
         <li class="nav-item">
           <a href="#" class="nav-link sideMenuToggler tog" style="margin-left:78px;"><span class="navbar-toggler-icon"></span></a>
         </li>
-        <li class="nav-item">
-          <div class="input-group input-group-sm mt-1">
-            <input type="search" class="form-control form-control-navbar" @keyup="searchit" v-model="search" placeholder="Search" aria-label="Search">
-            <div class="input-group-append">
-              <button class="btn btn-navbar" @click="searchit">
-              <i class="material-icons icon">search</i>
-              </button>
-            </div>
-          </div>
-        </li>
+        
     </div>
+    <div class="float-right"><i class="material-icons md-30">notifications</i><span class="badge badge-danger">4</span></div>
   </nav>
 
   <div class="wrapper d-flex">
@@ -115,7 +107,7 @@
 
 @auth
 <script>
-    window.user = @json(auth()->user())
+    window.user = @json(auth()->user()->load('notifications'))
 </script>
 @endauth
 <!-- Scripts -->
@@ -123,3 +115,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
 </body>
 </html>
+
+<style>
+.material-icons.md-30 { font-size: 30px; }
+</style>

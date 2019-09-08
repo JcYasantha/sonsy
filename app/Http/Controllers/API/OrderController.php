@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\API;
 use DB;
 use Illuminate\Http\Request;
+use App\Notifications\InvoiceNotification;
+use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\Controller;
 use App\Stock;
+use App\User;
 use App\Invoice;
 use App\Customer;
 use App\Item;
@@ -63,7 +66,12 @@ class OrderController extends Controller
                 DB::update('update stocks set Quantity = ? where ItemName = ?',[$itemQuantity['Quantity'] - $c['quantity'],$c['itemname']['id']]);
             }
         }
+
+        $SKeeper = User::all()->where('type', 'StockKeeper');
+        Notification::send($SKeeper, new InvoiceNotification($invoice));
         return $InvoiceNo;
+
+
         /* $invoice = new Invoice;
         $invoice-> CustomerID = $request -> CustomerID;
         $invoice-> Outstanding= $request -> Outstanding;
