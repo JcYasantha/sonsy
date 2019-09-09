@@ -18,7 +18,6 @@
                   <th>Unit Price</th>
                   <th>Quantity</th>
                   <th>Selling Price</th>
-                  <th>Total Balance</th>
                   <th v-if="$gate.isAdmin()">Modify</th>
                 </tr>
                 <tr v-for="stock in stocks" :key="stock.ItemNo">
@@ -27,7 +26,6 @@
                   <td>{{stock.UnitPrice}}</td>
                   <td>{{stock.Quantity}}</td>
                   <td>{{stock.SellingPrice}}</td>
-                  <td>{{stock.TotalBalance}}</td>
                   <td v-if="$gate.isAdmin()">
                       <!--<router-link to="/editStock">Edit</router-link>-->
                       <a href="#" @click="editModal(stock)" data-toggle="modal" data-target="#editIt">Edit</a> <b>|</b>

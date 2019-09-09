@@ -17,6 +17,7 @@ class CreateInvoicesTable extends Migration
             $table->Increments('InvoiceNo');
             $table->integer('CustomerID');
             $table->double('Outstanding');
+            $table->integer('Issued')->default(0);
             $table->timestamps();
         });
     }

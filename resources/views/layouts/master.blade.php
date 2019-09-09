@@ -138,5 +138,22 @@
 </html>
 
 <style>
-.material-icons.md-30 { font-size: 25px; }
+    .material-icons.md-30 { font-size: 25px; }
+    .dropdown-menu{
+            max-height:200px;/* you can change as you need it */
+            overflow:auto;/* to get scroll */
+    }
+    .testhover{
+      background-color:white;
+       border:none;
+       color:#878d8d;
+    }
+    .testhover:hover {
+       background-color:white;
+       border:none;
+       color:#878d8d;
+      }
+      .rou{
+        
+      }
 </style>

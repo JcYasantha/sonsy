@@ -1,6 +1,9 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
+    <div class="container" >
+        <div v-if="!$gate.isAdmin()">
+                    <not-found></not-found>
+                </div>
+        <div class="row justify-content-center" v-if="$gate.isAdmin()">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header"><b>Add Order</b></div>
@@ -67,7 +70,6 @@
                         </form>
                     </div>
                 </div>
-
                 <!-- //////////////////////////////////////////////////////////// -->
                                 <!-- modal to view the invoice -->
                 <!-- //////////////////////////////////////////////////////////// -->
@@ -129,11 +131,15 @@
                 </div>
             </div>
         </div>
+        
     </div>
 </template>
 
 <script>
     import Select2 from './Select2.vue';
+    // window.addEventListener("beforeunload", function(event) {
+    //     event.returnValue = "Ydsaudnusajdu";
+    // });
     $(document).ready(function(){
         $('#saveInvoice').click(function(){
             $('#viewInvoice').modal({

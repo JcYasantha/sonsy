@@ -58,6 +58,7 @@ let routes = [
     { path: '/Stock', component:  require('./components/Stock.vue').default },
     { path: '/addOrder', component:  require('./components/addorder.vue').default },
     { path: '/addStock', component:  require('./components/addStock.vue').default },
+    { path: '/InvoiceToIssue', component:  require('./components/InvoiceToIssue.vue').default },
     { path: '/printInvoice', component:  require('./components/printInvoice.vue').default },
     { path: '/addPeople', component:  require('./components/addPeople.vue').default },
     { path: '/viewCustomer', component:  require('./components/viewCustomer.vue').default },
