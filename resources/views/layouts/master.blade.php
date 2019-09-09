@@ -30,9 +30,39 @@
         <li class="nav-item">
           <a href="#" class="nav-link sideMenuToggler tog" style="margin-left:78px;"><span class="navbar-toggler-icon"></span></a>
         </li>
-        
+      </ul>
+      <ul class="navbar-nav" style="margin-right:8%;">
+      <li class="nav-item dropdown">
+        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="markAsRead()">
+        Notifications<span class="badge badge-danger">{{count(auth()->user()->unreadNotifications)}}</span>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          @forelse(auth()->user()->unreadNotifications as $notification)
+            <small><a class="dropdown-item" href="#"><strong>New Invoice </strong><br>Invoice No:{{$notification->data['NewInvoice']['id']}}</small></a>
+            @empty<a class="dropdown-item" href="#"><small>No unread Notifications</small></a>
+          @endforelse
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{ Auth::user()->name }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <router-link to="/profile" class="nav-link dropdown-item" href="#">Profile</router-link>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#"href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                                     <span class="text">{{ __('Logout') }}</span>
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form> 
+        </div>
+      </li>
+      </ul>
     </div>
-    <div class="float-right"><i class="material-icons md-30">notifications</i><span class="badge badge-danger">4</span></div>
+    <!-- <div class="float-right"><i class="material-icons md-30">notifications</i><span class="badge badge-danger">{{count(auth()->user()->notifications)}}</span></div> -->
   </nav>
 
   <div class="wrapper d-flex">
@@ -117,5 +147,10 @@
 </html>
 
 <style>
-.material-icons.md-30 { font-size: 30px; }
+.material-icons.md-30 { font-size: 25px; }
+.dropdown-item {
+  padding-right:1px;
+  padding-bottom:0px;
+  padding-top:0px;
+}
 </style>

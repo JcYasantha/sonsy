@@ -1,5 +1,5 @@
 <?php
-
+use App\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +13,10 @@
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('mark-all-read/{User}', function (User $User) {
+    $User -> unreadNotifications -> markAsRead();
+    return response(['message'=>'done']);
 });
 Auth::routes();
 

@@ -49,6 +49,7 @@ Vue.component(AlertError.name, AlertError)
 Vue.component('pagination',require('laravel-vue-pagination'));
 window.Fire = new Vue();  
 import VueRouter from 'vue-router'
+import Axios from 'axios';
 Vue.use(VueRouter)
 
 let routes = [
@@ -110,15 +111,22 @@ const app = new Vue({
     el: '#app',
     router,
     data:{
-      search: ''
+      search: '',
+      //allnotifications:[]
     },
     methods:{
       searchit(){
         console.log('searching.........');
         Fire.$emit('searching');
+      },
+      markAsRead(){
+        axios.get('/mark-all-read/' + window.user.id).then(response =>{
+
+        });
       }
     },
     created(){
+      //this.allnotifications = window.user.notifications;
       console.log(window.user)
     }
 });

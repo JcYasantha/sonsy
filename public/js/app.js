@@ -73171,6 +73171,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_6__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -73208,6 +73210,7 @@ vue__WEBPACK_IMPORTED_MODULE_2___default.a.component(vform__WEBPACK_IMPORTED_MOD
 vue__WEBPACK_IMPORTED_MODULE_2___default.a.component(vform__WEBPACK_IMPORTED_MODULE_0__["AlertError"].name, vform__WEBPACK_IMPORTED_MODULE_0__["AlertError"]);
 vue__WEBPACK_IMPORTED_MODULE_2___default.a.component('pagination', __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
 window.Fire = new vue__WEBPACK_IMPORTED_MODULE_2___default.a();
+
 
 vue__WEBPACK_IMPORTED_MODULE_2___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]);
 var routes = [{
@@ -73271,15 +73274,20 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2___default.a({
   el: '#app',
   router: router,
   data: {
-    search: ''
+    search: '' //allnotifications:[]
+
   },
   methods: {
     searchit: function searchit() {
       console.log('searching.........');
       Fire.$emit('searching');
+    },
+    markAsRead: function markAsRead() {
+      axios.get('/mark-all-read/' + window.user.id).then(function (response) {});
     }
   },
   created: function created() {
+    //this.allnotifications = window.user.notifications;
     console.log(window.user);
   }
 });
