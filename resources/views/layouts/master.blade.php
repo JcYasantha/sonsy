@@ -32,17 +32,8 @@
         </li>
       </ul>
       <ul class="navbar-nav" style="margin-right:8%;">
-      <li class="nav-item dropdown">
-        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="markAsRead()">
-        Notifications<span class="badge badge-danger">{{count(auth()->user()->unreadNotifications)}}</span>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          @forelse(auth()->user()->unreadNotifications as $notification)
-            <small><a class="dropdown-item" href="#"><strong>New Invoice </strong><br>Invoice No:{{$notification->data['NewInvoice']['id']}}</small></a>
-            @empty<a class="dropdown-item" href="#"><small>No unread Notifications</small></a>
-          @endforelse
-        </div>
-      </li>
+        <!-- notification -->
+        <notification></notification>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{ Auth::user()->name }}
@@ -148,9 +139,4 @@
 
 <style>
 .material-icons.md-30 { font-size: 25px; }
-.dropdown-item {
-  padding-right:1px;
-  padding-bottom:0px;
-  padding-top:0px;
-}
 </style>

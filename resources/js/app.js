@@ -81,6 +81,10 @@ window.Fire = new Vue();
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 Vue.component(
+  'notification',
+  require('./components/Notification.vue').default
+);
+Vue.component(
   'passport-clients',
   require('./components/passport/Clients.vue').default
 );
@@ -119,14 +123,24 @@ const app = new Vue({
         console.log('searching.........');
         Fire.$emit('searching');
       },
-      markAsRead(){
-        axios.get('/mark-all-read/' + window.user.id).then(response =>{
-
-        });
-      }
+      
     },
     created(){
       //this.allnotifications = window.user.notifications;
-      console.log(window.user)
+      // console.log(window.user)
+      // Echo.join(`chat`)
+      // .here((users) => {
+      //     //
+      // })
+      // .joining((user) => {
+      //     console.log(user.name);
+      // })
+      // .leaving((user) => {
+      //     console.log(user.name);
+      // });
+      // Echo.private('App.User.' + window.user.id)
+      // .notification((notification) => {
+      //     console.log(notification);
+      // });
     }
 });

@@ -24,8 +24,10 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "laravel-echo": "^1.5.4",
         "laravel-vue-pagination": "^2.3.0",
         "material-icons": "^0.3.1",
+        "pusher-js": "^5.0.1",
         "select2": "^4.0.9",
         "sweetalert2": "^8.11.7",
         "v-select2-component": "^0.3.9",
