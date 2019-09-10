@@ -3361,6 +3361,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LineChart_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LineChart.js */ "./resources/js/components/LineChart.js");
 //
 //
 //
@@ -3377,9 +3378,160 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// google.charts.load('current', {'packages':['line']});
+//       google.charts.setOnLoadCallback(drawChart);
+// //import LineChart from './LineChart.js'
+//    google.charts.load('current', {'packages':['line']});
+//       google.charts.setOnLoadCallback(drawChart);
+//     function drawChart() {
+//       var data = new google.visualization.DataTable();
+//       data.addColumn('number', 'Day');
+//       data.addColumn('number', 'Guardians of the Galaxy');
+//       data.addRows([
+//         [1,  37.8],
+//         [2,  30.9],
+//         [3,  25.4],
+//         [4,  11.7],
+//         [5,  11.9],
+//         [6,   8.8],
+//         [7,   7.6],
+//         [8,  12.3],
+//         [9,  16.9],
+//         [10, 12.8],
+//         [11,  5.3],
+//         [12,  6.6],
+//         [13,  4.8],
+//         [14,  4.2]
+//       ]);
+//       var options = {
+//         chart: {
+//           title: 'Box Office Earnings in First Two Weeks of Opening',
+//           subtitle: 'in millions of dollars (USD)'
+//         },
+//         width: 900,
+//         height: 500
+//       };
+//       var chart = new google.charts.Line(document.getElementById('linechart_material'));
+//       chart.draw(data, google.charts.Line.convertOptions(options));
+//     }
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
+  components: {
+    LineChart: _LineChart_js__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      totalCustomers: "",
+      totalOrders: "",
+      totalEmployees: "",
+      totalIncome: "",
+      monthlyOrders: {},
+      datacollection: null,
+      array: null //monthlyIncome:{},
+
+    };
+  },
+  created: function created() {
+    this.getTotalCustomers();
+    this.getTotalOrders();
+    this.getTotalEmployees();
+    this.fillData(); //this.getTotalIncome();
+  },
+  methods: {
+    getTotalCustomers: function getTotalCustomers() {
+      var _this = this;
+
+      axios.get("api/dashTotalCustomer").then(function (_ref) {
+        var data = _ref.data;
+        return _this.totalCustomers = data;
+      });
+    },
+    getTotalEmployees: function getTotalEmployees() {
+      var _this2 = this;
+
+      axios.get("api/dashTotalEmployees").then(function (_ref2) {
+        var data = _ref2.data;
+        return _this2.totalEmployees = data;
+      });
+    },
+    getTotalOrders: function getTotalOrders() {
+      var _this3 = this;
+
+      axios.get("api/dashTotalOrders").then(function (_ref3) {
+        var data = _ref3.data;
+        return _this3.totalOrders = data;
+      });
+    },
+    getIncome: function getIncome() {
+      var _this4 = this;
+
+      axios.get("api/dashTotalIncome").then(function (_ref4) {
+        var data = _ref4.data;
+        return _this4.totalIncome = data;
+      });
+    },
+    fillData: function fillData() {
+      var _this5 = this;
+
+      var Orders;
+      var value;
+      var jan;
+      var arrayValue = new Array();
+      axios.get("api/chart").then(function (response) {
+        Orders = response.data;
+        value = Orders.oder;
+        arrayValue = Object.values(value);
+        _this5.datacollection = {
+          labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+          datasets: [{
+            label: "Monthly orders",
+            backgroundColor: "#FF0066",
+            data: arrayValue
+          }]
+        };
+      });
+    }
   }
 });
 
@@ -4893,46 +5045,78 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       views: {},
       viewsOutstanding: {},
-      total: ''
+      total: "",
+      query: ""
     };
   },
   methods: {
-    getResults: function getResults() {
+    searchit: function searchit() {
       var _this = this;
 
+      var query = this.query;
+      axios.get("api/findUser?q=" + query).then(function (data) {
+        _this.views = data.data;
+      })["catch"](function () {});
+    },
+    getResults: function getResults() {
+      var _this2 = this;
+
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get('api/View?page=' + page).then(function (response) {
-        _this.views = response.data;
+      axios.get("api/View?page=" + page).then(function (response) {
+        _this2.views = data.data;
       });
     },
     loadViewCustomer: function loadViewCustomer() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("api/View").then(function (_ref) {
         var data = _ref.data;
-        return _this2.views = data;
+        return _this3.views = data;
       });
     },
     users: function users(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       //window.alert(id);
       axios.get("api/ViewOutstanding/" + id).then(function (_ref2) {
         var data = _ref2.data;
-        return _this3.viewsOutstanding = data;
+        return _this4.viewsOutstanding = data;
       });
     },
     totalOutstanding: function totalOutstanding(id) {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get("api/totalOutstanding/" + id).then(function (_ref3) {
         var data = _ref3.data;
-        return _this4.total = data;
+        return _this5.total = data;
       });
     }
   },
@@ -66412,27 +66596,88 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "fluid" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "card-deck" }, [
+          _c("div", { staticClass: "card bg-primary" }, [
+            _c("div", { staticClass: "card-body text-white" }, [
+              _c("div", { staticClass: "inner" }, [
+                _c("h3", [_vm._v(_vm._s(_vm.totalCustomers))]),
+                _vm._v(" "),
+                _c("i", { staticClass: "material-icons float-right" }, [
+                  _vm._v("person")
+                ]),
+                _vm._v(" "),
+                _c("p", [_vm._v("Total Customers")])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card bg-success" }, [
+            _c("div", { staticClass: "card-body text-white" }, [
+              _c("div", { staticClass: "inner" }, [
+                _c("h3", [_vm._v(_vm._s(_vm.totalEmployees))]),
+                _vm._v(" "),
+                _c("i", { staticClass: "material-icons float-right" }, [
+                  _vm._v("person_outline")
+                ]),
+                _vm._v(" "),
+                _c("p", [_vm._v("Total Employees")])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card bg-secondary" }, [
+            _c("div", { staticClass: "card-body text-white" }, [
+              _c("div", { staticClass: "inner" }, [
+                _c("h3", [_vm._v(_vm._s(_vm.totalOrders))]),
+                _vm._v(" "),
+                _c("i", { staticClass: "material-icons float-right" }, [
+                  _vm._v("account_balance")
+                ]),
+                _vm._v(" "),
+                _c("p", [_vm._v("Total Orders In this month")])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(0)
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        { staticClass: "col-md-12" },
+        [
+          _c("h4", [_vm._v("Reportes del Venta Junio")]),
+          _vm._v(" "),
+          _c("line-chart", {
+            attrs: { "chart-data": _vm.datacollection, height: 100 }
+          })
+        ],
+        1
+      )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Dashboard Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
-              )
-            ])
-          ])
+    return _c("div", { staticClass: "card bg-danger" }, [
+      _c("div", { staticClass: "card-body text-white" }, [
+        _c("div", { staticClass: "inner" }, [
+          _c("h3", [_vm._v("150")]),
+          _vm._v(" "),
+          _c("i", { staticClass: "material-icons float-right" }, [
+            _vm._v("bar_chart")
+          ]),
+          _vm._v(" "),
+          _c("p", [_vm._v("Total Income in this month")])
         ])
       ])
     ])
@@ -68644,14 +68889,64 @@ var render = function() {
     _c("div", { staticClass: "row mt-5" }, [
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "card" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "card-header" }, [
+            _c("h3", { staticClass: "card-title" }, [
+              _vm._v("Customers details")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-tools" }, [
+              _c("div", { staticClass: "input-group input-group-sm mt-1" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.query,
+                      expression: "query"
+                    }
+                  ],
+                  staticClass: "form-control form-control-navbar",
+                  attrs: {
+                    type: "search",
+                    placeholder: "Search",
+                    "aria-label": "Search"
+                  },
+                  domProps: { value: _vm.query },
+                  on: {
+                    keyup: _vm.searchit,
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.query = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-group-append" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-navbar",
+                      on: { click: _vm.searchit }
+                    },
+                    [
+                      _c("i", { staticClass: "material-icons icon" }, [
+                        _vm._v("search")
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            ])
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body table-responsive p-0" }, [
             _c("table", { staticClass: "table table-hover" }, [
               _c(
                 "tbody",
                 [
-                  _vm._m(1),
+                  _vm._m(0),
                   _vm._v(" "),
                   _vm._l(_vm.views.data, function(view) {
                     return _c("tr", { key: view.id }, [
@@ -68688,11 +68983,7 @@ var render = function() {
                                     }
                                   }
                                 },
-                                [
-                                  _vm._v(
-                                    "\n                               View  \n                            "
-                                  )
-                                ]
+                                [_vm._v("View")]
                               )
                             ])
                           ])
@@ -68755,7 +69046,7 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(2),
+              _vm._m(1),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
                 _c("div", { staticClass: "card-body table-responsive p-0" }, [
@@ -68763,7 +69054,7 @@ var render = function() {
                     _c(
                       "tbody",
                       [
-                        _vm._m(3),
+                        _vm._m(2),
                         _vm._v(" "),
                         _vm._l(_vm.viewsOutstanding, function(Outstandings) {
                           return _c("tr", { key: Outstandings.InvoiceNo }, [
@@ -68778,7 +69069,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("tr", [
-                          _vm._m(4),
+                          _vm._m(3),
                           _vm._v(" "),
                           _c("td", [_c("b", [_vm._v(_vm._s(_vm.total))])])
                         ])
@@ -68791,7 +69082,7 @@ var render = function() {
                 _c("div")
               ]),
               _vm._v(" "),
-              _vm._m(5)
+              _vm._m(4)
             ])
           ]
         )
@@ -68800,16 +69091,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Customers details")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-tools" })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -68827,7 +69108,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("City")]),
       _vm._v(" "),
-      _c("th", [_vm._v("View Indvoices and other details ")])
+      _c("th", [_vm._v("View Indvoices and other details")])
     ])
   },
   function() {
@@ -68860,7 +69141,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
-      _c("th", [_vm._v("Indvoice No")]),
+      _c("th", [_vm._v("Invoice No")]),
       _vm._v(" "),
       _c("th", [_vm._v("Invoice Value")]),
       _vm._v(" "),
@@ -68873,6 +69154,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("td", [
       _c("b", [_vm._v("Total Outstanding:")]),
+      _vm._v(" "),
       _c("p", { staticStyle: { float: "right" } }, [_vm._v("Rs.")])
     ])
   },
@@ -85133,8 +85415,8 @@ if (token) {
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "anyKey",
-  cluster: "ap2",
+  key: "",
+  cluster: "mt1",
   wsHost: window.location.hostname,
   wsPort: 6001,
   disableStats: true
@@ -85277,6 +85559,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InvoiceToIssue_vue_vue_type_template_id_dc367c48___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/LineChart.js":
+/*!**********************************************!*\
+  !*** ./resources/js/components/LineChart.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+!(function webpackMissingModule() { var e = new Error("Cannot find module 'vue-chartjs'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+
+var reactiveProp = !(function webpackMissingModule() { var e = new Error("Cannot find module 'vue-chartjs'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()).reactiveProp;
+/* harmony default export */ __webpack_exports__["default"] = ({
+  "extends": !(function webpackMissingModule() { var e = new Error("Cannot find module 'vue-chartjs'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()),
+  mixins: [reactiveProp],
+  props: ['chartData', 'options'],
+  mounted: function mounted() {
+    // this.chartData is created in the mixin.
+    // If you want to pass options please create a local options object
+    this.renderChart(this.chartData, this.options);
+  }
+});
 
 /***/ }),
 
@@ -86598,8 +86905,8 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\project 2 vids\sonsy new\new project\sonsy\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\project 2 vids\sonsy new\new project\sonsy\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! F:\Project1\sonsy 8.24\sonsy\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! F:\Project1\sonsy 8.24\sonsy\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

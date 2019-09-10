@@ -11,10 +11,7 @@
   <link rel="stylesheet" href="/path/to/material-icons/iconfont/material-icons.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css" rel="stylesheet" />
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-  <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
-<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 <div class="wrapper" id="app">

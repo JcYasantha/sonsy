@@ -1,12 +1,17 @@
 <?php
 
+
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Customer;
 use App\Http\Controllers\Controller;
+use DB;
+use App\Invoice;
+use App\Customer;
+use App\User;
+use Carbon\Carbon;
 
-class viewCustomerController extends Controller
+class ChartController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +20,38 @@ class viewCustomerController extends Controller
      */
     public function index()
     {
-        return Customer::latest()->paginate(5);
+
+
+        
+    }
+    public function fillData()
+    {
+        $users =Invoice::select('id', 'created_at')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->get()
+        ->groupBy(function($date) {
+            //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
+            return Carbon::parse($date->created_at)->format('m'); // grouping by months
+        });
+        
+        $usermcount = [];
+        $userArr = [];
+        
+        foreach ($users as $key => $value) {
+            $usermcount[(int)$key] = count($value);
+        }
+        
+        for($i = 1; $i <= 12; $i++){
+            if(!empty($usermcount[$i])){
+                $userArr[$i] = $usermcount[$i];    
+            }else{
+                $userArr[$i] = 0;    
+            }
+        }
+        return response()->json([
+            'usermcount' => $usermcount,
+            'oder' => $userArr
+        ], 200);
     }
 
     /**
@@ -28,22 +64,6 @@ class viewCustomerController extends Controller
     {
         //
     }
-    public function findUser()
-    {
-        if($search=\Request::get('q')){
-            $users=Customer::where(function($query) use ($search){
-                $query->where('Fname','LIKE',"%$search%")->orWhere('Lname','LIKE',"%$search%")->orWhere('City','LIKE',"%$search%")->orWhere('No','LIKE',"%$search%")->orWhere('Street','LIKE',"%$search%")->orWhere('NicNo','LIKE',"%$search%");
-            })->paginate(10);
-        }
-        return $users;
-    }
-
-  
-
-
-
-
-
 
     /**
      * Display the specified resource.
@@ -53,7 +73,7 @@ class viewCustomerController extends Controller
      */
     public function show($id)
     {
-        
+        //
     }
 
     /**

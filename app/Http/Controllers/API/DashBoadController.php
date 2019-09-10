@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Customer;
 use App\Http\Controllers\Controller;
+use DB;
+use App\Invoice;
+use App\Customer;
+use App\User;
+use Carbon\Carbon;
 
-class viewCustomerController extends Controller
+class DashBoadController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +19,7 @@ class viewCustomerController extends Controller
      */
     public function index()
     {
-        return Customer::latest()->paginate(5);
+        
     }
 
     /**
@@ -28,22 +32,6 @@ class viewCustomerController extends Controller
     {
         //
     }
-    public function findUser()
-    {
-        if($search=\Request::get('q')){
-            $users=Customer::where(function($query) use ($search){
-                $query->where('Fname','LIKE',"%$search%")->orWhere('Lname','LIKE',"%$search%")->orWhere('City','LIKE',"%$search%")->orWhere('No','LIKE',"%$search%")->orWhere('Street','LIKE',"%$search%")->orWhere('NicNo','LIKE',"%$search%");
-            })->paginate(10);
-        }
-        return $users;
-    }
-
-  
-
-
-
-
-
 
     /**
      * Display the specified resource.
@@ -53,7 +41,7 @@ class viewCustomerController extends Controller
      */
     public function show($id)
     {
-        
+        //
     }
 
     /**
@@ -66,6 +54,34 @@ class viewCustomerController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+    public function totalCustomer()
+    {
+        $count = Customer::count();
+        return $count;
+    }
+    public function TotalOrders()
+    {
+       $data=DB::table('invoices')
+                        ->whereYear('created_at', Carbon::now()->year)
+                        ->whereMonth('created_at', Carbon::now()->month)
+                        ->count();   
+        return $data;
+    }
+    public function TotalEmployees()
+    {
+        $count = User::count();
+        return $count;
+    }
+
+
+    public function TotalIncome()
+    {
+        
+    }
+    public function monthlyOrders()
+    {  
+    
     }
 
     /**

@@ -27,6 +27,12 @@ Route::get('getItems/{InvoiceNo}', 'API\invoiceCntroller@show');
 Route::get('ViewOutstanding/{id}', 'API\OutstandingAndPayments@show');
 Route::get('totalOutstanding/{id}', 'API\totalOutstandingController@show');
 Route::get('loadOutstanding/{id}', 'API\viewinvoiceController@show');
+Route::get('findUser','API\viewCustomerController@findUser');
+Route::get('dashTotalCustomer','API\DashBoadController@totalCustomer');
+Route::get('dashTotalOrders','API\DashBoadController@TotalOrders');
+Route::get('dashTotalEmployees','API\DashBoadController@TotalEmployees');
+Route::get('chart','API\ChartController@fillData');
+
 Route::apiResources(['stock'=>'API\OrderController']);
 Route::apiResources(['invoice'=>'API\OrderController']);
 Route::apiResources(['InvoiceToIssue'=>'API\InvoiceToIssueController']);
@@ -44,3 +50,5 @@ Route::apiResources(['supplier' => 'API\SupplierController']);
 Route::apiResources(['View' => 'API\viewCustomerController']);
 Route::apiResources(['postdated_cheques' => 'API\CashierController']);
 Route::apiResources(['lordcustomer' => 'API\viewController']);
+Route::apiResources(['monthlyOrders' => 'API\DashBoadController@monthlyOrders']);
+
