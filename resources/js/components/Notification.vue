@@ -8,11 +8,11 @@
         </div>
       </li> -->
       <div class="dropdown">
-        <button class="btn btn-light dropdown-toggle testhover" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="markAsRead">
-            <i class="material-icons">notifications</i><span class="badge badge-danger">{{unreadNotifications.length}}</span>
+        <button v-on:click="seen = false" class="btn btn-light dropdown-toggle testhover" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="markAsRead">
+            <i class="material-icons">notifications</i><span v-if="seen" class="badge badge-danger">{{unreadNotifications.length}}</span><span v-if="!seen" class="badge badge-danger">0</span>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <small><router-link style="background-color: white;" class="dropdown-item rou" to="/InvoiceToIssue" v-for="notification in allNotifications" :key="notification.data.NewInvoice.id"><strong>New Invoice </strong>Invoice No:{{notification.data.NewInvoice.id}}<div class="dropdown-divider"></div></router-link></small>
+            <router-link style="background-color: white;" class="dropdown-item rou" to="/InvoiceToIssue" v-for="notification in allNotifications" :key="notification.data.NewInvoice.id"><strong>New Invoice </strong><small>Invoice No:{{notification.data.NewInvoice.id}}</small><div class="dropdown-divider"></div></router-link>
             
         </div>
         </div>
@@ -22,13 +22,16 @@
     export default {
         data(){
             return{
+                seen: true,
                 allNotifications:[]
             }  
         },
         methods:{
             markAsRead(){
-                axios.get('/mark-all-read/' + window.user.id).then(response =>{
-                });
+                    axios.get('/mark-all-read/' + window.user.id).then(response =>{
+                        
+                    });
+
             }
         },
         computed:{
@@ -39,6 +42,7 @@
             }
         },
         mounted() {
+            //this.seen = true;
             console.log('user',window.user)
 
             this.allNotifications = window.user.notifications;
@@ -47,6 +51,7 @@
             .notification((notification) => {
                 console.log(notification, 'new notification Real time');
                 this.allNotifications.push(notification.notification);
+                this.seen = true;
             });
             }
     }

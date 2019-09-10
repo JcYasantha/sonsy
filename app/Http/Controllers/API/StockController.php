@@ -37,24 +37,22 @@ class StockController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'Discount' => 'required|numeric|min:0',
             'ItemName' => 'required|string|max:191',
             'UnitPrice' => 'required|numeric|min:0',
             'SupplierId' => 'required|numeric|min:0',
             'InvoiceNo' => 'required|numeric|min:0',
             'Quantity' => 'required|numeric|min:0',
             'SellingPrice' => 'required|numeric|min:0',
-            'TotalBalance' => 'required|numeric|min:0',
         ]);
         return Stock::create([
-            'Discount' => $request['Discount'],
+            'Discount' => 0,
             'ItemName' => $request['ItemName'],
             'UnitPrice' => $request['UnitPrice'],
             'SupplierId' => $request['SupplierId'],
             'InvoiceNo' => $request['InvoiceNo'],
             'Quantity' => $request['Quantity'],
             'SellingPrice' => $request['SellingPrice'],
-            'TotalBalance' => $request['TotalBalance'],
+            'TotalBalance' => $request['UnitPrice'] * $request['Quantity'],
         ]);
     }
 

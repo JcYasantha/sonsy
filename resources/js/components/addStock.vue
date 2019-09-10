@@ -95,40 +95,26 @@
                             class="form-control" :class="{ 'is-invalid': form.errors.has('UnitPrice') }">
                         <has-error :form="form" field="UnitPrice"></has-error>
                     </div>
-                    <div class="form-group col-md-3">
-                        <label>Discount</label>
-                        <input v-model="form.Discount" type="number" name="Discount"
-                            placeholder="Enter Discount"
-                            class="form-control" :class="{ 'is-invalid': form.errors.has('Discount') }">
-                        <has-error :form="form" field="Discount"></has-error>
-                    </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4 mt-3">
                         <label>SupplierId</label>
                         <input v-model="form.SupplierId" type="text" name="SupplierId"
                             placeholder="Enter SupplierId"
                             class="form-control" :class="{ 'is-invalid': form.errors.has('SupplierId') }">
                         <has-error :form="form" field="SupplierId"></has-error>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4 mt-3">
                         <label>InvoiceNo</label>
                         <input v-model="form.InvoiceNo" type="text" name="InvoiceNo"
                             placeholder="Enter InvoiceNo"
                             class="form-control" :class="{ 'is-invalid': form.errors.has('InvoiceNo') }">
                         <has-error :form="form" field="InvoiceNo"></has-error>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4 mt-3">
                         <label>SellingPrice</label>
                         <input v-model="form.SellingPrice" type="number" name="SellingPrice"
                             placeholder="Enter SellingPrice"
                             class="form-control" :class="{ 'is-invalid': form.errors.has('SellingPrice') }">
                         <has-error :form="form" field="SellingPrice"></has-error>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label>TotalBalance</label>
-                        <input v-model="form.TotalBalance" type="number" name="TotalBalance"
-                            placeholder="Enter TotalBalance"
-                            class="form-control" :class="{ 'is-invalid': form.errors.has('TotalBalance') }">
-                        <has-error :form="form" field="TotalBalance"></has-error>
                     </div>
                 <button type="submit" class="btn btn-primary" id="addbtn">Add Item</button>
                 </div>
@@ -174,6 +160,7 @@
             AddItem2(){
                 this.form.post('api/stocks')
                 .then(()=>{
+                    this.form.reset();
                     Toast.fire({
                     type: 'success',
                     title: 'Item added successfully'

@@ -107,7 +107,7 @@
                 .then( res => {
                      Swal.fire(
                               'Issued!',
-                              'Item has been issued',
+                              'Items have been issued',
                               'success'
                             )
                      Fire.$emit('afterIssue');

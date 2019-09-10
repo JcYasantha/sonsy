@@ -2007,7 +2007,7 @@ __webpack_require__.r(__webpack_exports__);
     Issued: function Issued() {
       console.log(this.ID);
       axios.put('api/InvoiceToIssue/' + this.ID).then(function (res) {
-        Swal.fire('Issued!', 'Item has been issued', 'success');
+        Swal.fire('Issued!', 'Items have been issued', 'success');
         Fire.$emit('afterIssue');
       })["catch"](function (e) {
         console.log(e);
@@ -2087,6 +2087,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      seen: true,
       allNotifications: []
     };
   },
@@ -2105,12 +2106,15 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
+    //this.seen = true;
     console.log('user', window.user);
     this.allNotifications = window.user.notifications;
     Echo["private"]('App.User.' + window.user.id).notification(function (notification) {
       console.log(notification, 'new notification Real time');
 
       _this.allNotifications.push(notification.notification);
+
+      _this.seen = true;
     });
   }
 });
@@ -2288,34 +2292,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       stocks: {},
       form: new Form({
         id: '',
-        Discount: '',
         ItemName: '',
         UnitPrice: '',
         SupplierId: '',
         InvoiceNo: '',
         Quantity: '',
-        SellingPrice: '',
-        TotalBalance: ''
+        SellingPrice: ''
       })
     };
   },
@@ -2684,20 +2672,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2728,7 +2702,11 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function () {});
     },
     AddItem2: function AddItem2() {
+      var _this2 = this;
+
       this.form.post('api/stocks').then(function () {
+        _this2.form.reset();
+
         Toast.fire({
           type: 'success',
           title: 'Item added successfully'
@@ -63553,13 +63531,25 @@ var render = function() {
           "aria-haspopup": "true",
           "aria-expanded": "false"
         },
-        on: { click: _vm.markAsRead }
+        on: {
+          click: [
+            function($event) {
+              _vm.seen = false
+            },
+            _vm.markAsRead
+          ]
+        }
       },
       [
         _c("i", { staticClass: "material-icons" }, [_vm._v("notifications")]),
-        _c("span", { staticClass: "badge badge-danger" }, [
-          _vm._v(_vm._s(_vm.unreadNotifications.length))
-        ])
+        _vm.seen
+          ? _c("span", { staticClass: "badge badge-danger" }, [
+              _vm._v(_vm._s(_vm.unreadNotifications.length))
+            ])
+          : _vm._e(),
+        !_vm.seen
+          ? _c("span", { staticClass: "badge badge-danger" }, [_vm._v("0")])
+          : _vm._e()
       ]
     ),
     _vm._v(" "),
@@ -63569,28 +63559,25 @@ var render = function() {
         staticClass: "dropdown-menu",
         attrs: { "aria-labelledby": "dropdownMenuButton" }
       },
-      [
-        _c(
-          "small",
-          _vm._l(_vm.allNotifications, function(notification) {
-            return _c(
-              "router-link",
-              {
-                key: notification.data.NewInvoice.id,
-                staticClass: "dropdown-item rou",
-                staticStyle: { "background-color": "white" },
-                attrs: { to: "/InvoiceToIssue" }
-              },
-              [
-                _c("strong", [_vm._v("New Invoice ")]),
-                _vm._v("Invoice No:" + _vm._s(notification.data.NewInvoice.id)),
-                _c("div", { staticClass: "dropdown-divider" })
-              ]
-            )
-          }),
-          1
+      _vm._l(_vm.allNotifications, function(notification) {
+        return _c(
+          "router-link",
+          {
+            key: notification.data.NewInvoice.id,
+            staticClass: "dropdown-item rou",
+            staticStyle: { "background-color": "white" },
+            attrs: { to: "/InvoiceToIssue" }
+          },
+          [
+            _c("strong", [_vm._v("New Invoice ")]),
+            _c("small", [
+              _vm._v("Invoice No:" + _vm._s(notification.data.NewInvoice.id))
+            ]),
+            _c("div", { staticClass: "dropdown-divider" })
+          ]
         )
-      ]
+      }),
+      1
     )
   ])
 }
@@ -63930,53 +63917,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "div",
-                        { staticClass: "form-group col-md-3" },
-                        [
-                          _c("label", [_vm._v("Discount")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.Discount,
-                                expression: "form.Discount"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.form.errors.has("Discount")
-                            },
-                            attrs: {
-                              type: "number",
-                              name: "Discount",
-                              placeholder: "Enter Discount"
-                            },
-                            domProps: { value: _vm.form.Discount },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form,
-                                  "Discount",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("has-error", {
-                            attrs: { form: _vm.form, field: "Discount" }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "form-group col-md-3" },
+                        { staticClass: "form-group col-md-6" },
                         [
                           _c("label", [_vm._v("Supplier Id")]),
                           _vm._v(" "),
@@ -64068,7 +64009,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "div",
-                        { staticClass: "form-group col-md-6" },
+                        { staticClass: "form-group col-md-12" },
                         [
                           _c("label", [_vm._v("Selling Price")]),
                           _vm._v(" "),
@@ -64107,52 +64048,6 @@ var render = function() {
                           _vm._v(" "),
                           _c("has-error", {
                             attrs: { form: _vm.form, field: "SellingPrice" }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "form-group col-md-6" },
-                        [
-                          _c("label", [_vm._v("Total Balance")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.TotalBalance,
-                                expression: "form.TotalBalance"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            class: {
-                              "is-invalid": _vm.form.errors.has("TotalBalance")
-                            },
-                            attrs: {
-                              type: "number",
-                              name: "TotalBalance",
-                              placeholder: "Enter TotalBalance"
-                            },
-                            domProps: { value: _vm.form.TotalBalance },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form,
-                                  "TotalBalance",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("has-error", {
-                            attrs: { form: _vm.form, field: "TotalBalance" }
                           })
                         ],
                         1
@@ -64959,47 +64854,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "form-group col-md-3" },
-                  [
-                    _c("label", [_vm._v("Discount")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.Discount,
-                          expression: "form.Discount"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      class: { "is-invalid": _vm.form.errors.has("Discount") },
-                      attrs: {
-                        type: "number",
-                        name: "Discount",
-                        placeholder: "Enter Discount"
-                      },
-                      domProps: { value: _vm.form.Discount },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.form, "Discount", $event.target.value)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("has-error", {
-                      attrs: { form: _vm.form, field: "Discount" }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "form-group col-md-3" },
+                  { staticClass: "form-group col-md-4 mt-3" },
                   [
                     _c("label", [_vm._v("SupplierId")]),
                     _vm._v(" "),
@@ -65041,7 +64896,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "form-group col-md-6" },
+                  { staticClass: "form-group col-md-4 mt-3" },
                   [
                     _c("label", [_vm._v("InvoiceNo")]),
                     _vm._v(" "),
@@ -65081,7 +64936,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "form-group col-md-6" },
+                  { staticClass: "form-group col-md-4 mt-3" },
                   [
                     _c("label", [_vm._v("SellingPrice")]),
                     _vm._v(" "),
@@ -65120,52 +64975,6 @@ var render = function() {
                     _vm._v(" "),
                     _c("has-error", {
                       attrs: { form: _vm.form, field: "SellingPrice" }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "form-group col-md-6" },
-                  [
-                    _c("label", [_vm._v("TotalBalance")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.form.TotalBalance,
-                          expression: "form.TotalBalance"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      class: {
-                        "is-invalid": _vm.form.errors.has("TotalBalance")
-                      },
-                      attrs: {
-                        type: "number",
-                        name: "TotalBalance",
-                        placeholder: "Enter TotalBalance"
-                      },
-                      domProps: { value: _vm.form.TotalBalance },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.form,
-                            "TotalBalance",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("has-error", {
-                      attrs: { form: _vm.form, field: "TotalBalance" }
                     })
                   ],
                   1

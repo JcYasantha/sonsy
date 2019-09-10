@@ -76,14 +76,7 @@
                               class="form-control" :class="{ 'is-invalid': form.errors.has('UnitPrice') }">
                           <has-error :form="form" field="UnitPrice"></has-error>
                       </div>
-                      <div class="form-group col-md-3">
-                          <label>Discount</label>
-                          <input v-model="form.Discount" type="number" name="Discount"
-                              placeholder="Enter Discount"
-                              class="form-control" :class="{ 'is-invalid': form.errors.has('Discount') }">
-                          <has-error :form="form" field="Discount"></has-error>
-                      </div>
-                      <div class="form-group col-md-3">
+                      <div class="form-group col-md-6">
                           <label>Supplier Id</label>
                           <input v-model="form.SupplierId" type="text" name="SupplierId"
                               placeholder="Enter SupplierId"
@@ -97,20 +90,13 @@
                               class="form-control" :class="{ 'is-invalid': form.errors.has('InvoiceNo') }">
                           <has-error :form="form" field="InvoiceNo"></has-error>
                       </div>
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-12">
                           <label>Selling Price</label>
                           <input v-model="form.SellingPrice" type="number" name="SellingPrice"
                               placeholder="Enter SellingPrice"
                               class="form-control" :class="{ 'is-invalid': form.errors.has('SellingPrice') }"> 
                           <has-error :form="form" field="SellingPrice"></has-error>
                       </div> 
-                      <div class="form-group col-md-6">
-                          <label>Total Balance</label>
-                          <input v-model="form.TotalBalance" type="number" name="TotalBalance"
-                              placeholder="Enter TotalBalance"
-                              class="form-control" :class="{ 'is-invalid': form.errors.has('TotalBalance') }">
-                          <has-error :form="form" field="TotalBalance"></has-error>
-                      </div>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -133,14 +119,12 @@
               },
                 form:new Form({
                     id:'',
-                    Discount:'',
                     ItemName:'',
                     UnitPrice:'',
                     SupplierId:'',
                     InvoiceNo:'',
                     Quantity:'',
                     SellingPrice:'',
-                    TotalBalance:'',
 
                 })
             }
