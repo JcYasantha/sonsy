@@ -5,9 +5,17 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Outstandigs</h3>
-
-                <div class="card-tools">
-                  
+                
+                  <div class="input-group input-group-sm">
+                    <input class="form-control form-control-navbar" @keyup="searchit" v-model="search" type="search" placeholder="Search" aria-label="Search">
+                    <div class="input-group-append">
+                      <button class="btn btn-navbar" @click="searchit">
+                        <i class="material-icons icon">search</i>
+                      </button>
+                   </div>
+                  </div>
+                
+                <div class="card-tools">                  
                 </div>
               </div>
               <!-- /.card-header -->
@@ -38,7 +46,7 @@
         </div>
     
         <div class="modal fade" id="postdate" tabindex="-1" role="dialog" aria-labelledby="postdateLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="postdateLabel">Post_dated Cheque</h5>
@@ -55,10 +63,10 @@
                   <has-error :form="form" field="chequeNo"></has-error>
                 </div>
                  <div class="form-group">
-                  <input v-model="form.Chaquedate" type="date" name="Chaquedate" 
-                    placeholder="Cheque Date"
-                    class="form-control" :class="{ 'is-invalid': form.errors.has('Chaquedate') }">
-                  <has-error :form="form" field="Chaquedate"></has-error>
+                  <input v-model="form.chaquedate" type="date" name="chaquedate" id="datepicker"
+                    placeholder="cheque Date"
+                    class="form-control datepicker"  :class="{ 'is-invalid': form.errors.has('chaquedate') }">
+                  <has-error :form="form" field="chaquedate"></has-error>
                 </div>
                  <div class="form-group">
                   <input v-model="form.ChequeBalance" type="number" name="ChequeBalance"
@@ -101,7 +109,7 @@
 
         <!-- Modal -->
 <div class="modal fade" id="invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
@@ -112,6 +120,7 @@
       <div class="modal-body">
         <table class="table table-hover">
                   <tbody><tr>
+                    <th>Customer ID</th>
                     <th>Invoice No</th>
                     <th>Outstanding Amount</th>
                     <th>Payment</th>
@@ -119,6 +128,7 @@
                   </tr>
                   
                   <tr v-for="out in out" :key="out.OrderNo">
+                    <td>{{out.CustomerID}}</td>
                     <td>{{out.InvoiceNo}}</td>
                     <td>Rs.{{out.InvoiceValue}}</td>
                     <td><input type="number" id="amount" min="0" class="form-control total" step=".01" v-model="out.amount"></td>
@@ -139,9 +149,21 @@
 </template>
 
 <script>
+
+$( function() { 
+  $('.datepicker').datepicker({
+                format: 'yy/mm/dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+});
+
+    
     export default {
         data(){
           return{
+            
+            search: {},
             customers:{},
             invoices:{},
             out:{},
@@ -150,12 +172,15 @@
                 }],
            form: new Form({
               chequeNo:'',
-              ChequeDate:'',
+              chequeDate:'',
               ChequeBalance:'',
               Branch:'',
               Bank:'',
               CustomerID:'',
               remember: false
+           }),
+           form2: new Form({
+
            }),
            
 
@@ -185,11 +210,17 @@
           lordcustomer(){
               axios.get("api/lordcustomer").then(({ data }) => this.customers = data.data);
           },
+         
           save(){
             let dataI = {
                     inc: this.out
                 }
-                
+                Swal.fire({
+                  type: 'error',
+                  title: 'Oops...',
+                  text: 'Something went wrong!',
+                  footer: '<a href>Why do I have this issue?</a>'
+                })
                 axios.post('api/savePayment', {dataI})
                 .then( res => {
                     $('#invoice').modal('hide');
@@ -200,10 +231,23 @@
                             )
                     console.log(res)
                 })
+                axios.post('api/mailPayment', {dataI})
+                .then( res => {
+                    $('#invoice').modal('hide');
+                    Swal.fire(
+                              'Sent!',
+                              'Email has been sent to customer',
+                              'success'
+                            )
+                    console.log(res)
+                })
                 .catch( e => {
                     console.log(e)
                 })
           },
+          searchit(){
+                Fire.$emit('searching');
+              },
 
           /* loadinvoice(id){
               axios.get("api/loadinvoice/"+id).then(({ data }) =>(this.invoices = data.data));
@@ -212,7 +256,28 @@
 
         },
         created() {
+            Fire.$on('searching',() => {
+              let query = this.search;
+              axios.get("api/findcustomer?q=" + query)
+              .then((data) =>{
+                    this.customers = data.data
+              })
+              .catch(() =>{
+
+              })
+           })
             this.lordcustomer()
-        }
+        },
+        
+            
+            
+            
+            
+              
+            
+        
     }
 </script>
+
+
+

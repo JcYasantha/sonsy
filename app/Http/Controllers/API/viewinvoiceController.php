@@ -47,7 +47,7 @@ class viewinvoiceController extends Controller
      */
     public function show($id)
     {
-        $invoices = DB::table('outstanding__payments')->where('CustomerID', $id)->get();
+        $invoices = DB::table('outstanding__payments')->where('CustomerID', $id)->where('Balance','>',0)->get();
         return $invoices;
     }
 

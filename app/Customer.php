@@ -13,6 +13,7 @@ class Customer extends Model
         'No',
         'City' ,
         'Street',
+        'email',
         'NicNo'
     ];
 }

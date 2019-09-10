@@ -44,7 +44,14 @@
                             class="form-control" :class="{ 'is-invalid': form.errors.has('Street') }">
                         <has-error :form="form" field="Street"></has-error>
                     </div>
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-6">
+                        <label>E-mail</label>
+                        <input v-model="form.email" type="email" name="email"
+                            placeholder="Enter email"
+                            class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                        <has-error :form="form" field="email"></has-error>
+                    </div>
+                    <div class="form-group col-md-6">
                         <label>Nic No</label>
                         <input v-model="form.NicNo" type="text" name="NicNo"
                             placeholder="Enter Nic No"
@@ -116,6 +123,7 @@ export default {
                 No: '',
                 City: '',
                 Street: '',
+                email: '',
                 NicNo:''
             }),
             form2: new Form({
