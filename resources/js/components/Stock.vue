@@ -184,7 +184,11 @@
                 },
                 addItem(){
                     this.form.post('api/stock')
-                }
+                },
+                // ItemsLow(){
+                //    axios.get("api/lowI").then(({data}) => {this.lowI = data.data});
+                //    console.log(lowI.Quantity)
+                // }
         },
         created() {
             this.loadStock();

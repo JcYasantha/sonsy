@@ -45,7 +45,7 @@
                                                 </select>
                                                 
                                             </td>
-                                            <td><input type="number" id="lkd" required min="0" max="invoice_product.itemname.Quantity" step="1" name="test" v-model="invoice_product.quantity" class="form-control qty" @input="calculateLineTotal(k,invoice_product)"></td>
+                                            <td><input type="number" id="lkd" required min="0" max="invoice_product.itemname.Quantity" step="1" name="test" v-model="invoice_product.quantity" class="form-control qty" @input="calculateLineTotal(k,invoice_product)" @click="itemLow(k,invoice_product)"></td>
                                             <td><input readonly required type="number" min="0" step="1" v-model="invoice_product.itemname.SellingPrice" class="form-control amount" @input="calculateLineTotal(k,$event)"></td>
                                             <td><input readonly required class="form-control total" type="number" min="0" step=".01" v-model="invoice_product.line_total" /></td>
                                             <td style="text-align:center;"><a href="#" class="remove" style="color:red;" @click="deleteRow(k, invoice_product)"><i class="material-icons icon">delete</i></a></td>
@@ -70,6 +70,7 @@
                         </form>
                     </div>
                 </div>
+                <notifications group="foo" />
                 <!-- //////////////////////////////////////////////////////////// -->
                                 <!-- modal to view the invoice -->
                 <!-- //////////////////////////////////////////////////////////// -->
@@ -214,12 +215,23 @@
                         }).then((result) => {
                             //$("#lkd").val("");
                             this.invoice_products.splice(idx, 1);
-                        })        
+                        })      
                 }
                 if (!isNaN(total)) {
                     invoice_product.line_total = total.toFixed(2);
                 }
                 this.calculateTotal();
+            },
+            itemLow(index,invoice_product){
+                if(invoice_product.itemname.Quantity < 1000){
+                    this.$notify({
+                            group: 'foo',
+                            type: 'error',
+                            title: 'Important message',
+                            text: invoice_product.itemname.item + ' is running low.Please take necessary actions.',
+                            duration: 10000,
+                    });  
+                }
             },
             calculateTotal() {
                 var subtotal;

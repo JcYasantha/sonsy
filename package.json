@@ -34,6 +34,7 @@
         "vform": "^1.0.0",
         "vue-html-to-paper": "^1.1.1",
         "vue-multiselect": "^2.1.6",
+        "vue-notification": "^1.3.16",
         "vue-router": "^3.0.6",
         "vue-select2": "^0.2.6"
     }

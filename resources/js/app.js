@@ -12,6 +12,10 @@ require('./edit');
 window.Vue = require('vue');
 import { Form, HasError, AlertError } from 'vform'
 
+import Notifications from 'vue-notification'
+Vue.use(Notifications)
+
+
 //importing Gate tod authenticate user
 import Gate from "./Gate";
 Vue.prototype.$gate = new Gate(window.user);
