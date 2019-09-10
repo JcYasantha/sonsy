@@ -31,7 +31,7 @@ Route::get('findUser','API\viewCustomerController@findUser');
 Route::get('dashTotalCustomer','API\DashBoadController@totalCustomer');
 Route::get('dashTotalOrders','API\DashBoadController@TotalOrders');
 Route::get('dashTotalEmployees','API\DashBoadController@TotalEmployees');
-
+Route::get('chart','API\ChartController@fillData');
 
 Route::apiResources(['stock'=>'API\OrderController']);
 Route::apiResources(['invoice'=>'API\OrderController']);
@@ -48,5 +48,4 @@ Route::apiResources(['View' => 'API\viewCustomerController']);
 Route::apiResources(['postdated_cheques' => 'API\CashierController']);
 Route::apiResources(['lordcustomer' => 'API\viewController']);
 Route::apiResources(['monthlyOrders' => 'API\DashBoadController@monthlyOrders']);
-Route::apiResources(['chart' => 'API\ChartController']);
 

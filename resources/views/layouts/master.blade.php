@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="/path/to/material-icons/iconfont/material-icons.css">
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 <div class="wrapper" id="app">
