@@ -100,7 +100,7 @@
               <table class="table table-hover">
                 <tbody>
                   <tr>
-                    <th>Indvoice No</th>
+                    <th>Invoice No</th>
                     <th>Invoice Value</th>
                     <th>Outstanding</th>
                   </tr>
