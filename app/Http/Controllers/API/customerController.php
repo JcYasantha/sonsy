@@ -29,7 +29,7 @@ class customerController extends Controller
         $this->validate($request,[
             'Fname' => 'required|string|max:191',
             'Lname' => 'required|string|max:191',
-            'No' => 'required|numeric|regex:/^0([0-9\s\-\+\(\)]*)$/|min:9|max:10',
+            'No' => 'required|numeric|regex:/^0([0-9\s\-\+\(\)]*)$/|min:9',
             'City' => 'required|string|max:191',
             'Street' => 'required|string|max:191',
             'NicNo' => 'required|string|min:10',

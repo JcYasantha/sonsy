@@ -131,14 +131,12 @@
         data(){
             return{
                 form: new Form({
-                    Discount:'',
                     ItemName:'',
                     UnitPrice:'',
                     SupplierId:'',
                     InvoiceNo:'',
                     Quantity:'',
                     SellingPrice:'',
-                    TotalBalance:'',
                 })
             }
         },

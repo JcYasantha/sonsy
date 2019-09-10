@@ -78,14 +78,12 @@ class StockController extends Controller
     {
         $stocks = Stock::findOrFail($id);
         $this->validate($request,[
-            'Discount' => 'required|numeric|min:0',
             'ItemName' => 'required|string|max:191',
             'UnitPrice' => 'required|numeric|min:0',
             'SupplierId' => 'required|numeric|min:0',
             'InvoiceNo' => 'required|numeric|min:0',
             'Quantity' => 'required|numeric|min:0',
             'SellingPrice' => 'required|numeric|min:0',
-            'TotalBalance' => 'required|numeric|min:0',
         ]);
         $stocks->update($request->all());
     }
