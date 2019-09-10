@@ -32,6 +32,7 @@ class customerController extends Controller
             'No' => $request['No'],
             'City' => $request['City'],
             'Street' => $request['Street'],
+            'email' => $request['email'],
             'NicNo' => $request['NicNo']
         ]);
     }

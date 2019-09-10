@@ -64,4 +64,20 @@ class viewController extends Controller
     {
         //
     }
+
+    public function search(){
+
+        if($search = \Request::get('q')){
+           $customer = customer::where(function($query) use ($search){
+               $query->where('Fname','LIKE',"%$search")
+                    ->orwhere('Lname','LIKE',"%$search");
+                })->get();
+        }
+        else{
+            $customer = customer::latest()->get();
+        }
+
+
+        return $customer;
+    }
 }

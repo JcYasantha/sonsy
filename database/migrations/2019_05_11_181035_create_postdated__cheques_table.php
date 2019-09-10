@@ -15,7 +15,7 @@ class CreatePostdatedChequesTable extends Migration
     {
         Schema::create('postdated__cheques', function (Blueprint $table) {
             $table->bigInteger('chequeNo');
-            $table->date('ChequeDate');
+            $table->date('chequeDate');
             $table->double('ChequeBalance');
             $table->string('Branch');
             $table->string('Bank');

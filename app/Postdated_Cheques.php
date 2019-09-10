@@ -8,7 +8,7 @@ class Postdated_Cheques extends Model
 {
     protected $fillable = [
         'chequeNo' ,
-        'ChequeDate' ,
+        'chequeDate' ,
         'ChequeBalance',
         'Branch' ,
         'Bank',

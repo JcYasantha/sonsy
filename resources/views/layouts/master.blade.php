@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="/path/to/material-icons/iconfont/material-icons.css">
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+  <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
 
 </head>
 <body>
@@ -111,6 +112,7 @@
 @endauth
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}" defer></script>
-
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 </body>
 </html>

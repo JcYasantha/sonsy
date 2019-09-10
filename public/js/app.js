@@ -2252,6 +2252,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2262,6 +2269,7 @@ __webpack_require__.r(__webpack_exports__);
         No: '',
         City: '',
         Street: '',
+        email: '',
         NicNo: ''
       }),
       form2: new Form({
@@ -2830,11 +2838,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+$(function () {
+  $('.datepicker').datepicker({
+    format: 'yy/mm/dd',
+    autoclose: true,
+    todayHighlight: true
+  });
+});
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     var _ref;
 
     return _ref = {
+      search: {},
       customers: {},
       invoices: {},
       out: {}
@@ -2842,13 +2868,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       amount: ''
     }]), _defineProperty(_ref, "form", new Form({
       chequeNo: '',
-      ChequeDate: '',
+      chequeDate: '',
       ChequeBalance: '',
       Branch: '',
       Bank: '',
       CustomerID: '',
       remember: false
-    })), _ref;
+    })), _defineProperty(_ref, "form2", new Form({})), _ref;
   },
   methods: {
     postdate: function postdate() {
@@ -2881,18 +2907,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var dataI = {
         inc: this.out
       };
+      Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+        footer: '<a href>Why do I have this issue?</a>'
+      });
       axios.post('api/savePayment', {
         dataI: dataI
       }).then(function (res) {
         $('#invoice').modal('hide');
         Swal.fire('Updated!', 'Item has been updated', 'success');
         console.log(res);
+      });
+      axios.post('api/mailPayment', {
+        dataI: dataI
+      }).then(function (res) {
+        $('#invoice').modal('hide');
+        Swal.fire('Sent!', 'Email has been sent to customer', 'success');
+        console.log(res);
       })["catch"](function (e) {
         console.log(e);
       });
+    },
+    searchit: function searchit() {
+      Fire.$emit('searching');
     }
   },
   created: function created() {
+    var _this4 = this;
+
+    Fire.$on('searching', function () {
+      var query = _this4.search;
+      axios.get("api/findcustomer?q=" + query).then(function (data) {
+        _this4.customers = data.data;
+      })["catch"](function () {});
+    });
     this.lordcustomer();
   }
 });
@@ -45613,7 +45663,45 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "form-group col-md-12" },
+              { staticClass: "form-group col-md-6" },
+              [
+                _c("label", [_vm._v("E-mail")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.email,
+                      expression: "form.email"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  class: { "is-invalid": _vm.form.errors.has("email") },
+                  attrs: {
+                    type: "email",
+                    name: "email",
+                    placeholder: "Enter email"
+                  },
+                  domProps: { value: _vm.form.email },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "email", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("has-error", { attrs: { form: _vm.form, field: "email" } })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "form-group col-md-6" },
               [
                 _c("label", [_vm._v("Nic No")]),
                 _vm._v(" "),
@@ -46772,14 +46860,62 @@ var render = function() {
     _c("div", { staticClass: "row mt-5" }, [
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "card" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "card-header" }, [
+            _c("h3", { staticClass: "card-title" }, [_vm._v("Outstandigs")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group input-group-sm" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.search,
+                    expression: "search"
+                  }
+                ],
+                staticClass: "form-control form-control-navbar",
+                attrs: {
+                  type: "search",
+                  placeholder: "Search",
+                  "aria-label": "Search"
+                },
+                domProps: { value: _vm.search },
+                on: {
+                  keyup: _vm.searchit,
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.search = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group-append" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-navbar",
+                    on: { click: _vm.searchit }
+                  },
+                  [
+                    _c("i", { staticClass: "material-icons icon" }, [
+                      _vm._v("search")
+                    ])
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-tools" })
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body table-responsive p-0" }, [
             _c("table", { staticClass: "table table-hover" }, [
               _c(
                 "tbody",
                 [
-                  _vm._m(1),
+                  _vm._m(0),
                   _vm._v(" "),
                   _vm._l(_vm.customers, function(cus) {
                     return _c("tr", { key: cus.id }, [
@@ -46853,12 +46989,12 @@ var render = function() {
         _c(
           "div",
           {
-            staticClass: "modal-dialog modal-dialog-centered",
+            staticClass: "modal-dialog modal-dialog-centered modal-lg",
             attrs: { role: "document" }
           },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(2),
+              _vm._m(1),
               _vm._v(" "),
               _c(
                 "form",
@@ -46925,20 +47061,21 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.Chaquedate,
-                              expression: "form.Chaquedate"
+                              value: _vm.form.chaquedate,
+                              expression: "form.chaquedate"
                             }
                           ],
-                          staticClass: "form-control",
+                          staticClass: "form-control datepicker",
                           class: {
-                            "is-invalid": _vm.form.errors.has("Chaquedate")
+                            "is-invalid": _vm.form.errors.has("chaquedate")
                           },
                           attrs: {
                             type: "date",
-                            name: "Chaquedate",
-                            placeholder: "Cheque Date"
+                            name: "chaquedate",
+                            id: "datepicker",
+                            placeholder: "cheque Date"
                           },
-                          domProps: { value: _vm.form.Chaquedate },
+                          domProps: { value: _vm.form.chaquedate },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -46946,7 +47083,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.form,
-                                "Chaquedate",
+                                "chaquedate",
                                 $event.target.value
                               )
                             }
@@ -46954,7 +47091,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "Chaquedate" }
+                          attrs: { form: _vm.form, field: "chaquedate" }
                         })
                       ],
                       1
@@ -47127,7 +47264,7 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _vm._m(3)
+                  _vm._m(2)
                 ]
               )
             ])
@@ -47152,22 +47289,24 @@ var render = function() {
         _c(
           "div",
           {
-            staticClass: "modal-dialog modal-dialog-centered",
+            staticClass: "modal-dialog modal-dialog-centered modal-lg",
             attrs: { role: "document" }
           },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(4),
+              _vm._m(3),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
                 _c("table", { staticClass: "table table-hover" }, [
                   _c(
                     "tbody",
                     [
-                      _vm._m(5),
+                      _vm._m(4),
                       _vm._v(" "),
                       _vm._l(_vm.out, function(out) {
                         return _c("tr", { key: out.OrderNo }, [
+                          _c("td", [_vm._v(_vm._s(out.CustomerID))]),
+                          _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(out.InvoiceNo))]),
                           _vm._v(" "),
                           _c("td", [_vm._v("Rs." + _vm._s(out.InvoiceValue))]),
@@ -47242,16 +47381,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Outstandigs")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-tools" })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -47340,6 +47469,8 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [
+      _c("th", [_vm._v("Customer ID")]),
+      _vm._v(" "),
       _c("th", [_vm._v("Invoice No")]),
       _vm._v(" "),
       _c("th", [_vm._v("Outstanding Amount")]),
@@ -64841,14 +64972,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!*********************************************!*\
   !*** ./resources/js/components/cashier.vue ***!
   \*********************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _cashier_vue_vue_type_template_id_68725a70___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cashier.vue?vue&type=template&id=68725a70& */ "./resources/js/components/cashier.vue?vue&type=template&id=68725a70&");
 /* harmony import */ var _cashier_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cashier.vue?vue&type=script&lang=js& */ "./resources/js/components/cashier.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _cashier_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _cashier_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -64878,7 +65010,7 @@ component.options.__file = "resources/js/components/cashier.vue"
 /*!**********************************************************************!*\
   !*** ./resources/js/components/cashier.vue?vue&type=script&lang=js& ***!
   \**********************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -65513,8 +65645,8 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\Project_2\sonsy\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\Project_2\sonsy\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\User\Desktop\project\sonsy\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\User\Desktop\project\sonsy\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\postdated_cheques;
+use App\Mail\ContactFormMail;
+use Illuminate\Support\Facades\Mail;
 
-class CashierController extends Controller
+
+class MailFormController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +17,7 @@ class CashierController extends Controller
      */
     public function index()
     {
-        
+        //
     }
 
     /**
@@ -26,25 +28,30 @@ class CashierController extends Controller
      */
     public function store(Request $request)
     {
+        $out = json_decode($request->getContent('dataI'), true);
+        $formData = $out['dataI'];
 
-        $this->validate($request,[
-            'chequeNo' => 'required|string|min:0',
-            'chequeDate' => 'required|date',
-            'Bank' => 'required|string|max:191',
-            'Branch' => 'required|string|max:191',
-            'ChequeBalance' => 'required|numeric|min:0',
-            'CustomerID' => 'required|numeric|min:0',
-            
-            
-        ]);
-        return postdated_cheques::create([
-            'chequeNo' => $request['chequeNo'],
-            'chequeDate' => $request['chequeDate'],
-            'ChequeBalance' => $request['ChequeBalance'],
-            'Branch' => $request['Branch'],
-            'Bank' => $request['Bank'],
-            'CustomerID' => $request['CustomerID'],
-        ]);
+        foreach ($formData as $inv) {
+            foreach ($inv as $data) {
+                if(empty($data['amount'])){
+                    return 0;
+                }
+                
+                //DB::update('update outstanding__payments set SettledAmount = ? , Balance = ? where InvoiceNo=?',[$c['SettledAmount'] +$c['amount'], $c['Balance']-$c['amount'] , $c['InvoiceNo']]);
+
+                
+                // $data = request([
+                //     'id' => $c['CustomerID'],
+                //     'InvoiceNo' => $c['InvoiceNo'],
+                //     'InvoiceValue' => $c['InvoiceValue'],
+                //     'Ammount' => $c['amount'],
+                //     'Balance' => $c['Balance'],
+                // ]); 
+                Mail::to('test@test.com')->send(new ContactFormMail($data));
+            }
+        } 
+
+        
     }
 
     /**
@@ -78,8 +85,6 @@ class CashierController extends Controller
      */
     public function destroy($id)
     {
-       
+        //
     }
-
-   
 }
