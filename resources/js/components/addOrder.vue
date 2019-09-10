@@ -12,10 +12,11 @@
                             <div class="row">
                                 <div class="col-lg-6 col-sm-6"> 
                                      <div class="form-group" >
-                                        <select2 name="model1[]" v-model.number="form.id" style="min-width:100%">
-                                            <option disabled value="0">Select a Customer</option>
+                                        <select2 name="model1[]" v-model="form.id" style="min-width:100%" @input="onChange()">
+                                            <option value="0" disabled >Select a Customer</option>
                                             <option v-for="customer in customers" :key="customer.id" v-bind:value="customer.id">{{customer.Fname}} {{customer.Lname}} | {{customer.City}},{{customer.Street}}</option> 
                                         </select2>
+                                        
                                     </div>
                                     <br><br><br>
                                 </div>
@@ -63,8 +64,8 @@
                                     </tfoot>                                   
                                 </table>
                                 <div class="form-group">
-                                    <button class="btn btn-success" v-show="editMode" @click="saveInvoice()" id="saveInvoice" data-toggle="modal" data-target="#viewInvoice">View Invoice</button>
-                                    <button class="btn btn-success" v-show="!editMode" @click="editInvoice()" id="saveInvoice" data-toggle="modal" data-target="#viewInvoice">Edit Invoice</button>
+                                    <button class="btn btn-success" v-show="editMode" @click="saveInvoice()" id="saveInvoice" data-toggle="modal" v-if="seen">View Invoice</button>
+                                    <button class="btn btn-success" v-show="!editMode" @click="editInvoice()" id="saveInvoice" data-toggle="modal">Edit Invoice</button>
                                 </div>
                             </div>
                         </form>
@@ -137,22 +138,24 @@
 </template>
 
 <script>
+    
     import Select2 from './Select2.vue';
     // window.addEventListener("beforeunload", function(event) {
     //     event.returnValue = "Ydsaudnusajdu";
     // });
-    $(document).ready(function(){
-        $('#saveInvoice').click(function(){
-            $('#viewInvoice').modal({
-                backdrop: 'static',
-                keyboard: false
-            });
-        });
-    });
+    // $(document).ready(function(){
+    //     $('#saveInvoice').click(function(){
+    //         $('#viewInvoice').modal({
+    //             backdrop: 'static',
+    //             keyboard: false
+    //         });
+    //     });
+    // });
     export default {
         data(){
             return{
                 editMode: true,
+                seen:false,
                 stocks : {},
                 customers:{},
                 InvoiceNo:{},
@@ -173,6 +176,9 @@
         },
         
         methods:{
+            onChange(){
+                this.seen = true;
+            },
             loadStock(){
                 axios.get("api/stock").then(({data}) => (this.stocks = data));
             },
@@ -259,7 +265,7 @@
                     //console.log(res)
                     this.customerInfo();
                     this.getItem(res.data);
-                    
+                    $('#viewInvoice').modal('show');    
                 })
                 .catch( e => {
                     console.log(e)
@@ -292,7 +298,7 @@
                     this.customerInfo();
                     console.log(res.data)
                     this.getItem(res.data);
-                    
+                    $('#viewInvoice').modal('show');    
                 })
                 .catch( e => {
                     console.log(e)

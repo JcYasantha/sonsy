@@ -16,13 +16,14 @@ import Notifications from 'vue-notification'
 Vue.use(Notifications)
 
 
+
 //importing Gate tod authenticate user
 import Gate from "./Gate";
 Vue.prototype.$gate = new Gate(window.user);
 
 import Vue from 'vue';
 import VueHtmlToPaper from 'vue-html-to-paper';
- 
+
 const options = {
   name: '_blank',
   specs: [

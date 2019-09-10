@@ -2867,22 +2867,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
  // window.addEventListener("beforeunload", function(event) {
 //     event.returnValue = "Ydsaudnusajdu";
 // });
+// $(document).ready(function(){
+//     $('#saveInvoice').click(function(){
+//         $('#viewInvoice').modal({
+//             backdrop: 'static',
+//             keyboard: false
+//         });
+//     });
+// });
 
-$(document).ready(function () {
-  $('#saveInvoice').click(function () {
-    $('#viewInvoice').modal({
-      backdrop: 'static',
-      keyboard: false
-    });
-  });
-});
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editMode: true,
+      seen: false,
       stocks: {},
       customers: {},
       InvoiceNo: {},
@@ -2902,6 +2904,9 @@ $(document).ready(function () {
     };
   },
   methods: {
+    onChange: function onChange() {
+      this.seen = true;
+    },
     loadStock: function loadStock() {
       var _this = this;
 
@@ -3008,6 +3013,8 @@ $(document).ready(function () {
         _this4.customerInfo();
 
         _this4.getItem(res.data);
+
+        $('#viewInvoice').modal('show');
       })["catch"](function (e) {
         console.log(e);
       });
@@ -3045,6 +3052,8 @@ $(document).ready(function () {
         console.log(res.data);
 
         _this5.getItem(res.data);
+
+        $('#viewInvoice').modal('show');
       })["catch"](function (e) {
         console.log(e);
       });
@@ -4661,6 +4670,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     photo: "";
@@ -4708,6 +4718,7 @@ __webpack_require__.r(__webpack_exports__);
           type: "success",
           title: "Updated successfully"
         });
+        location.reload();
       })["catch"](function () {
         Swal.fire({
           type: "error",
@@ -4738,6 +4749,8 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     updatePassword: function updatePassword() {
+      var _this3 = this;
+
       this.form.put("api/profileChangePassword/").then(function () {
         Swal.fire({
           type: "success",
@@ -4749,6 +4762,8 @@ __webpack_require__.r(__webpack_exports__);
           title: "Invalid password",
           text: "Enter correct password"
         });
+
+        _this3.form.reset();
       });
     }
   }
@@ -4765,7 +4780,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -97826,10 +97840,15 @@ var render = function() {
                                 {
                                   staticStyle: { "min-width": "100%" },
                                   attrs: { name: "model1[]" },
+                                  on: {
+                                    input: function($event) {
+                                      return _vm.onChange()
+                                    }
+                                  },
                                   model: {
                                     value: _vm.form.id,
                                     callback: function($$v) {
-                                      _vm.$set(_vm.form, "id", _vm._n($$v))
+                                      _vm.$set(_vm.form, "id", $$v)
                                     },
                                     expression: "form.id"
                                   }
@@ -97837,7 +97856,7 @@ var render = function() {
                                 [
                                   _c(
                                     "option",
-                                    { attrs: { disabled: "", value: "0" } },
+                                    { attrs: { value: "0", disabled: "" } },
                                     [_vm._v("Select a Customer")]
                                   ),
                                   _vm._v(" "),
@@ -98184,31 +98203,32 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [
-                          _c(
-                            "button",
-                            {
-                              directives: [
+                          _vm.seen
+                            ? _c(
+                                "button",
                                 {
-                                  name: "show",
-                                  rawName: "v-show",
-                                  value: _vm.editMode,
-                                  expression: "editMode"
-                                }
-                              ],
-                              staticClass: "btn btn-success",
-                              attrs: {
-                                id: "saveInvoice",
-                                "data-toggle": "modal",
-                                "data-target": "#viewInvoice"
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.saveInvoice()
-                                }
-                              }
-                            },
-                            [_vm._v("View Invoice")]
-                          ),
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.editMode,
+                                      expression: "editMode"
+                                    }
+                                  ],
+                                  staticClass: "btn btn-success",
+                                  attrs: {
+                                    id: "saveInvoice",
+                                    "data-toggle": "modal"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.saveInvoice()
+                                    }
+                                  }
+                                },
+                                [_vm._v("View Invoice")]
+                              )
+                            : _vm._e(),
                           _vm._v(" "),
                           _c(
                             "button",
@@ -98224,8 +98244,7 @@ var render = function() {
                               staticClass: "btn btn-success",
                               attrs: {
                                 id: "saveInvoice",
-                                "data-toggle": "modal",
-                                "data-target": "#viewInvoice"
+                                "data-toggle": "modal"
                               },
                               on: {
                                 click: function($event) {
@@ -100777,8 +100796,9 @@ var render = function() {
                               "is-invalid": _vm.form.errors.has("Telephone")
                             },
                             attrs: {
-                              type: "number",
+                              type: "text",
                               id: "Telephone",
+                              pattern: "[0-9]{9}",
                               placeholder: "Telephone Number"
                             },
                             domProps: { value: _vm.form.Telephone },
@@ -100954,7 +100974,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "form-group" }, [
                       _c("label", { staticClass: "col-sm-10 control-label" }, [
-                        _vm._v("Enter your New Password")
+                        _vm._v("Confirm New Password")
                       ]),
                       _vm._v(" "),
                       _c(
@@ -101243,6 +101263,8 @@ var render = function() {
                               "is-invalid": _vm.form.errors.has("email")
                             },
                             attrs: {
+                              pattern:
+                                "[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*",
                               type: "email",
                               name: "email",
                               placeholder: "Email"
@@ -101326,10 +101348,6 @@ var render = function() {
                                 { attrs: { value: "StockKeeper" } },
                                 [_vm._v("Stock Keeper")]
                               ),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "Accountant" } }, [
-                                _vm._v("Accountant")
-                              ]),
                               _vm._v(" "),
                               _c("option", { attrs: { value: "Cashier" } }, [
                                 _vm._v("Cashier")

@@ -59,7 +59,7 @@
                       </div>
                       <div class="form-group col-md-12">
                           <label>Email</label>
-                          <input v-model="form.email" type="email" name="email"
+                          <input pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*" v-model="form.email" type="email" name="email"
                               placeholder="Email"
                               class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
                           <has-error :form="form" field="email"></has-error>
@@ -70,7 +70,6 @@
                                 <option selected value="">Choose...</option>
                                 <option value="Admin">Admin</option>
                                 <option value="StockKeeper">Stock Keeper</option>
-                                <option value="Accountant">Accountant</option>
                                 <option value="Cashier">Cashier</option>
                             </select>
                             <has-error :form="form" field="type"></has-error>

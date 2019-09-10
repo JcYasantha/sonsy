@@ -34,6 +34,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+    
         $invoice_products = json_decode($request->getContent('dataD','formD'), true);
         $formData = $invoice_products['formD'];
         $pro_info = $invoice_products['dataD'];

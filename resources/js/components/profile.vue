@@ -120,9 +120,10 @@
                     <div class="col-sm-10">
                       <input
                         v-model="form.Telephone"
-                        type="number"
+                        type="text"
                         class="form-control"
                         id="Telephone"
+                        pattern="[0-9]{9}"
                         placeholder="Telephone Number"
                         :class="{'is-invalid':form.errors.has('Telephone') }"
                       />
@@ -190,7 +191,7 @@
                   </div>
                   <!--confirm password -->
                   <div class="form-group">
-                    <label class="col-sm-10 control-label">Enter your New Password</label>
+                    <label class="col-sm-10 control-label">Confirm New Password</label>
 
                     <div class="col-sm-10">
                       <input
@@ -273,6 +274,7 @@ export default {
             type: "success",
             title: "Updated successfully"
           });
+          location.reload();
         })
         .catch(() => {
           Swal.fire({
@@ -316,8 +318,8 @@ export default {
             type: "error",
             title: "Invalid password",
             text: "Enter correct password",
-            
           });
+          this.form.reset();
         });
        
     }
