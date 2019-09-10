@@ -39,7 +39,7 @@
         {{ Auth::user()->name }}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <router-link to="/profile" class="nav-link dropdown-item" href="#">Profile</router-link>
+          <router-link to="/profile" class="nav-link dropdown-item" href="#" style="background-color: white;">Profile</router-link>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#"href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

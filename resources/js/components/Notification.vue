@@ -12,7 +12,7 @@
             <i class="material-icons">notifications</i><span class="badge badge-danger">{{unreadNotifications.length}}</span>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <small><router-link class="dropdown-item rou" to="/InvoiceToIssue" v-for="notification in allNotifications" :key="notification.data.NewInvoice.id"><strong>New Invoice </strong><br>Invoice No:{{notification.data.NewInvoice.id}}<div class="dropdown-divider"></div></router-link></small>
+            <small><router-link style="background-color: white;" class="dropdown-item rou" to="/InvoiceToIssue" v-for="notification in allNotifications" :key="notification.data.NewInvoice.id"><strong>New Invoice </strong>Invoice No:{{notification.data.NewInvoice.id}}<div class="dropdown-divider"></div></router-link></small>
             
         </div>
         </div>

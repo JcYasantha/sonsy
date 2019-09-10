@@ -63578,11 +63578,11 @@ var render = function() {
               {
                 key: notification.data.NewInvoice.id,
                 staticClass: "dropdown-item rou",
+                staticStyle: { "background-color": "white" },
                 attrs: { to: "/InvoiceToIssue" }
               },
               [
                 _c("strong", [_vm._v("New Invoice ")]),
-                _c("br"),
                 _vm._v("Invoice No:" + _vm._s(notification.data.NewInvoice.id)),
                 _c("div", { staticClass: "dropdown-divider" })
               ]
