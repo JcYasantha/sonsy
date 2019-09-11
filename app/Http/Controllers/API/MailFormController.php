@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\ContactFormMail;
@@ -47,7 +47,8 @@ class MailFormController extends Controller
                 //     'Ammount' => $c['amount'],
                 //     'Balance' => $c['Balance'],
                 // ]); 
-                Mail::to('test@test.com')->send(new ContactFormMail($data));
+                $email = DB::table('customers')->where('id',($data['CustomerID']))->get('email');
+                Mail::to($email)->send(new ContactFormMail($data));
             }
         } 
 

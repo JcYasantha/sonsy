@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="card">
+        <div class="card" v-if="$gate.isAdmin()">
             <div class="card-header">
                <b>Add People</b>
                <button type="button" class="btn btn-warning" onclick="document.getElementById('customer').style.display='inline';document.getElementById('supplier').style.display='none'">Add Customers</button>
@@ -110,6 +110,9 @@
                 </div>
             </form>
         </div> 
+        <div v-if="!$gate.isAdmin()">
+                    <not-found></not-found>
+                </div>
     </div>   
 </template>
 <script>
@@ -140,33 +143,39 @@ export default {
         AddCustomer(){
             /* this.form.post('api/customer')
             .then(({data}) => (this.form.reset())); */
-            this.form.post('api/customer')
-            .then(()=>{
-                Swal.fire(
-                    'Addedd!',
-                              'Customer Added',
-                              'success'
-                            )  
-              this.form.reset();
-                })
-                .catch(()=>{
-                    
-                })
+            if(this.$gate.isAdmin()){
+                this.form.post('api/customer')
+                .then(()=>{
+                    Swal.fire(
+                        'Addedd!',
+                                'Customer Added',
+                                'success'
+                                )  
+                this.form.reset();
+                    })
+                    .catch(()=>{
+                        
+                    })
+            }
+            
 
         },
         AddSupplier(){
-            this.form2.post('api/supplier')
-            .then(()=>{
-                Swal.fire(
-                    'Addedd!',
-                              'Supplier Added',
-                              'success'
-                            )  
-              this.form2.reset();
-                })
-                .catch(()=>{
-                    
-                })
+            if(this.$gate.isAdmin()){
+                this.form2.post('api/supplier')
+                .then(()=>{
+                    Swal.fire(
+                        'Addedd!',
+                                'Supplier Added',
+                                'success'
+                                )  
+                this.form2.reset();
+                    })
+                    .catch(()=>{
+                        
+                    })
+            }
+            
         }
     }
 }

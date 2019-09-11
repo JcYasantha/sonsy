@@ -133,7 +133,8 @@
                 UpdateItem(){
                   //this.$Progress.start();
                   //console.log("Editing data");
-                  this.form.put('api/stocks/'+this.form.id)
+                  if(this.$gate.isAdminOrKeeper()){
+                    this.form.put('api/stocks/'+this.form.id)
                   .then(() => {
                     $('#editIt').modal('hide');
                     Swal.fire(
@@ -147,6 +148,8 @@
                   .catch(() => {
                    // this.$Progress.fail();
                   });
+                  }
+                  
                 },
                 editModal(stock){
                   this.form.fill(stock);
@@ -163,6 +166,7 @@
                       confirmButtonText: 'Yes, delete it!'
                     }).then((result) => {
                       if (result.value) {
+                        if(this.$gate.isAdmin()){
                           this.form.delete('api/stocks/'+id).then(()=>{    
                             Swal.fire(
                               'Deleted!',
@@ -174,6 +178,7 @@
                         }).catch(()=>{
                             Swal("Failed!","Something went wrong", "warning");
                         });
+                      }
                       }
                     })
                 },

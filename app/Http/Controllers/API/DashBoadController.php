@@ -8,6 +8,7 @@ use DB;
 use App\Invoice;
 use App\Customer;
 use App\User;
+use App\Stock;
 use Carbon\Carbon;
 
 class DashBoadController extends Controller
@@ -75,15 +76,12 @@ class DashBoadController extends Controller
     }
 
 
-    public function TotalIncome()
+    public function Stock()
     {
-        
+        $count = Stock::count();
+        return $count;
     }
-    public function monthlyOrders()
-    {  
-    
-    }
-
+   
     /**
      * Remove the specified resource from storage.
      *

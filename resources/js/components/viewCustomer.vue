@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row mt-5">
+    <div class="row mt-5" v-if="$gate.isAdmin()">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
@@ -75,6 +75,9 @@
         <!-- /.card -->
       </div>
     </div>
+    <div v-if="!$gate.isAdmin()">
+                    <not-found></not-found>
+    </div>
     <!-- Button trigger modal -->
 
     <!-- Modal -->
@@ -148,34 +151,46 @@ export default {
   methods: {
     searchit(){
         let query=this.query;
-        
-        axios.get("api/findUser?q="+ query)
-        .then((data)=>{
-            this.views=data.data;
-        })
-        .catch(()=>{
+        if(this.$gate.isAdmin()){
+          axios.get("api/findUser?q="+ query)
+          .then((data)=>{
+              this.views=data.data;
+          })
+          .catch(()=>{
 
-        })
-        
+          })
+        }    
       },
     getResults(page = 1) {
-      axios.get("api/View?page=" + page).then(response => {
+      if(this.$gate.isAdmin()){
+        axios.get("api/View?page=" + page).then(response => {
         this.views = data.data;
       });
+      }
+      
     },
     loadViewCustomer() {
-      axios.get("api/View").then(({ data }) => (this.views = data));
+      if(this.$gate.isAdmin()){
+        axios.get("api/View").then(({ data }) => (this.views = data));
+      }
+      
     },
     users(id) {
       //window.alert(id);
-      axios
+      if(this.$gate.isAdmin()){
+        axios
         .get("api/ViewOutstanding/" + id)
         .then(({ data }) => (this.viewsOutstanding = data));
+      }
+      
     },
     totalOutstanding(id) {
-      axios
+      if(this.$gate.isAdmin()){
+        axios
         .get("api/totalOutstanding/" + id)
         .then(({ data }) => (this.total = data));
+      }
+      
     }
   },
   created() {

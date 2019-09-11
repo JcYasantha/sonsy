@@ -109,6 +109,10 @@ Vue.component(
   'not-found',
   require('./components/NotFound.vue').default
 );
+Vue.component(
+  'not-dash',
+  require('./components/NotDash.vue').default
+);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 /**

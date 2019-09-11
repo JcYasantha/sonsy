@@ -30,6 +30,7 @@ class viewinvoiceController extends Controller
 
         foreach ($formData as $inv) {
             foreach ($inv as $c) {
+                
                 if(empty($c['amount'])){
                     $c['amount']=0;
                 }

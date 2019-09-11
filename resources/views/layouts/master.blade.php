@@ -68,10 +68,7 @@
           <li class="nav-item">
             <router-link to="/users" class="nav-link sideLink px-2"><i class="material-icons icon">people</i><span class="text">Users</span></router-link>
           </li>
-          @endcan
-          <li class="nav-item">
-            <router-link to="/test1" class="nav-link sideLink px-2"><i class="material-icons icon">insert_chart</i><span class="text">chart</span></router-link>
-          </li>    
+          @endcan    
           @can('isadminorStockKeeper')   
           <li class="nav-item">
             <router-link to="/Stock" class="nav-link sideLink px-2"><i class="material-icons icon">stock</i><span class="text">Stock</span></router-link>

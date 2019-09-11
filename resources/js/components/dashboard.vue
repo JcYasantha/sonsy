@@ -1,6 +1,6 @@
 <template>
   <div class="fluid">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" v-if="$gate.isAdmin()">
       <div class="col-md-12">
         <div class="card-deck">
           <div class="card bg-primary">
@@ -36,22 +36,28 @@
           <div class="card bg-danger">
             <div class="card-body text-white">
               <div class="inner">
-                <h3>150</h3>
+                <h3>{{totalStock}}</h3>
                 <i class="material-icons float-right">bar_chart</i>
-                <p>Total Income in this month</p>
+                <p>Number of Items</p>
+                
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <h4>Reportes del Venta Junio</h4>
-        <line-chart :chart-data="datacollection" :height="100"></line-chart>
+    <div class="row" v-if="$gate.isAdmin()">
+      <div class="col-md-12 small">
+        <h4>Monthly Orders</h4>
+        <line-chart :chart-data="datacollection" :height="120"></line-chart>
+        <center><h5>Month</h5></center>
       </div>
+
       <!-- <div id="linechart_material" style="width: 900px; height: 500px"></div> -->
     </div>
+    <div v-if="!$gate.isAdmin()">
+          <not-dash></not-dash>
+      </div>
   </div>
 </template>
 
@@ -111,7 +117,9 @@ export default {
       totalIncome: "",
       monthlyOrders: {},
       datacollection: null,
-      array: null
+      array: null,
+      totalStock:''
+      
       //monthlyIncome:{},
     };
   },
@@ -120,28 +128,40 @@ export default {
     this.getTotalOrders();
     this.getTotalEmployees();
     this.fillData();
+    this.getStocks();
     //this.getTotalIncome();
   },
   methods: {
     getTotalCustomers() {
-      axios
-        .get("api/dashTotalCustomer")
-        .then(({ data }) => (this.totalCustomers = data));
+      if(this.$gate.isAdmin()){
+        axios
+          .get("api/dashTotalCustomer")
+          .then(({ data }) => (this.totalCustomers = data));
+      }
     },
     getTotalEmployees() {
-      axios
-        .get("api/dashTotalEmployees")
-        .then(({ data }) => (this.totalEmployees = data));
+      if(this.$gate.isAdmin()){
+        axios
+          .get("api/dashTotalEmployees")
+          .then(({ data }) => (this.totalEmployees = data));
+
+      }
     },
     getTotalOrders() {
-      axios
-        .get("api/dashTotalOrders")
-        .then(({ data }) => (this.totalOrders = data));
+      if(this.$gate.isAdmin()){
+        axios
+          .get("api/dashTotalOrders")
+          .then(({ data }) => (this.totalOrders = data));
+
+      }
     },
-    getIncome() {
-      axios
-        .get("api/dashTotalIncome")
-        .then(({ data }) => (this.totalIncome = data));
+    getStocks() {
+      if(this.$gate.isAdmin()){
+
+        axios
+          .get("api/dashStock")
+          .then(({ data }) => (this.totalStock = data));
+      }
     },
 
     fillData() {
@@ -149,6 +169,7 @@ export default {
       let value;
       let jan;
       let arrayValue = new Array();
+      if(this.$gate.isAdmin()){
       axios.get("api/chart").then(response => {
         Orders = response.data;
 
@@ -178,9 +199,15 @@ export default {
           ]
         };
       });
+      }
     }
   }
 };
 </script>
 <style lang="css">
+.small{
+margin-top:6vh;
+}
+
+
 </style>

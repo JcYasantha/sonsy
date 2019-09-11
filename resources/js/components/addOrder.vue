@@ -180,10 +180,14 @@
                 this.seen = true;
             },
             loadStock(){
-                axios.get("api/stock").then(({data}) => (this.stocks = data));
+                if(this.$gate.isAdmin()){
+                    axios.get("api/stock").then(({data}) => (this.stocks = data));
+                }
             },
             loadCustomer(){
-                axios.get("api/customer").then(({data}) => (this.customers = data));
+                if(this.$gate.isAdmin()){
+                    axios.get("api/customer").then(({data}) => (this.customers = data));    
+                }
             },
             //invoiceLastId(){
             //    axios.get("api/invoiceget").then(({data}) => (this.InvoiceNo = data));
@@ -258,18 +262,21 @@
                     inc: this.invoice_products
                 }
                 
-                axios.post('api/invoice', {dataD, formD})
-                .then( res => {
-                    //this.$router.push('printInvoice')
-                    this.invoiceLastId();
-                    //console.log(res)
-                    this.customerInfo();
-                    this.getItem(res.data);
-                    $('#viewInvoice').modal('show');    
-                })
-                .catch( e => {
-                    console.log(e)
-                })
+                if(this.$gate.isAdmin()){
+                    axios.post('api/invoice', {dataD, formD})
+                    .then( res => {
+                        //this.$router.push('printInvoice')
+                        this.invoiceLastId();
+                        //console.log(res)
+                        this.customerInfo();
+                        this.getItem(res.data);
+                        $('#viewInvoice').modal('show');    
+                    })
+                    .catch( e => {
+                        console.log(e)
+                    })
+                }
+                
                 /* this.form.post('api/invoice', data)
                     .then( res => {
                         //this.printme();
@@ -290,19 +297,21 @@
                 let dataD = {
                     inc: this.invoice_products
                 }
+                if(this.$gate.isAdmin()){
+                    axios.put('api/invoice/' + this.InvoiceNo.id , {dataD, formD})
+                    .then( res => {
+                        this.invoiceLastId();
+                        //console.log(res)
+                        this.customerInfo();
+                        console.log(res.data)
+                        this.getItem(res.data);
+                        $('#viewInvoice').modal('show');    
+                    })
+                    .catch( e => {
+                        console.log(e)
+                    })
+                }
                 
-                axios.put('api/invoice/' + this.InvoiceNo.id , {dataD, formD})
-                .then( res => {
-                    this.invoiceLastId();
-                    //console.log(res)
-                    this.customerInfo();
-                    console.log(res.data)
-                    this.getItem(res.data);
-                    $('#viewInvoice').modal('show');    
-                })
-                .catch( e => {
-                    console.log(e)
-                })
             },
             printme(){
                 this.$htmlToPaper('printMe', () => {
@@ -310,13 +319,22 @@
                 });
             },
             invoiceLastId(){
-                axios.get("api/invoiceget").then(({data}) => (this.InvoiceNo = data));
+                if(this.$gate.isAdmin()){
+                    axios.get("api/invoiceget").then(({data}) => (this.InvoiceNo = data));
+                }
+                
             },
             customerInfo(){
-                axios.get("api/customerID/"+this.form.id).then(({data}) => (this.customerDetails = data));
+                if(this.$gate.isAdmin()){
+
+                    axios.get("api/customerID/"+this.form.id).then(({data}) => (this.customerDetails = data));
+                }
             },
             getItem(num){
-                axios.get("api/getItems/"+num).then(({data}) => (this.getItems = data));
+                if(this.$gate.isAdmin()){
+
+                    axios.get("api/getItems/"+num).then(({data}) => (this.getItems = data));
+                }
             },
             cancelOrder(){
                 console.log(JSON.stringify(this.invoice_products));
@@ -337,21 +355,21 @@
                 cancelButtonText: 'No'
                 }).then((result) => {
                 if (result.value) {
-                    axios.put('api/cancelOrder/' + this.InvoiceNo.id , {dataD, formD})
-                    .then( res => {
-                        Swal.fire(
-                        'Canceled!',
-                        'Order has been canceled.',
-                        'success'
-                        ).then((result) => {
-                            location.reload();
+                    if(this.$gate.isAdmin()){
+                        axios.put('api/cancelOrder/' + this.InvoiceNo.id , {dataD, formD})
+                        .then( res => {
+                            Swal.fire(
+                            'Canceled!',
+                            'Order has been canceled.',
+                            'success'
+                            ).then((result) => {
+                                location.reload();
+                            })
                         })
-                    })
-                    .catch( e => {
-                        console.log(e)
-                    })
-                    
-                    
+                        .catch( e => {
+                            console.log(e)
+                        })
+                    }  
                 }else{
                     $('#viewInvoice').modal('show')   
                 }

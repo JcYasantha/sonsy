@@ -63,10 +63,10 @@
                   <has-error :form="form" field="chequeNo"></has-error>
                 </div>
                  <div class="form-group">
-                  <input v-model="form.chaquedate" type="date" name="chaquedate" id="datepicker"
+                  <input v-model="form.chequeDate" type="date" name="chequeDate" id="datepicker"
                     placeholder="cheque Date"
-                    class="form-control datepicker"  :class="{ 'is-invalid': form.errors.has('chaquedate') }">
-                  <has-error :form="form" field="chaquedate"></has-error>
+                    class="form-control datepicker"  :class="{ 'is-invalid': form.errors.has('chequeDate') }">
+                  <has-error :form="form" field="chequeDate"></has-error>
                 </div>
                  <div class="form-group">
                   <input v-model="form.ChequeBalance" type="number" name="ChequeBalance"
@@ -112,7 +112,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Invoice Payment</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -131,7 +131,7 @@
                     <td>{{out.CustomerID}}</td>
                     <td>{{out.InvoiceNo}}</td>
                     <td>Rs.{{out.InvoiceValue}}</td>
-                    <td><input type="number" id="amount" min="0" class="form-control total" step=".01" v-model="out.amount"></td>
+                    <td><input type="number" id="amount" min="0" class="form-control total" step=".01" v-model="out.amount" @input="calculateLineTotal(out)"></td>
                     <td>Rs.{{out.Balance}}</td>
                   </tr>   
         </tbody></table>
@@ -144,25 +144,16 @@
   </div>
 </div>
 
+
     
     </div>
 </template>
 
 <script>
-
-$( function() { 
-  $('.datepicker').datepicker({
-                format: 'yy/mm/dd',
-                autoclose: true,
-                todayHighlight: true
-            });
-});
-
-    
     export default {
         data(){
           return{
-            
+            seen:true,
             search: {},
             customers:{},
             invoices:{},
@@ -211,22 +202,28 @@ $( function() {
               axios.get("api/lordcustomer").then(({ data }) => this.customers = data.data);
           },
          
+          calculateLineTotal(out){
+            if(out.amount > out.Balance){
+              Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Amount cant be greater than Balance',
+                        }).then((result) => {
+                            //$("#lkd").val("");
+                            out.amount = '';
+                        }) 
+            }
+          },
           save(){
             let dataI = {
                     inc: this.out
                 }
-                Swal.fire({
-                  type: 'error',
-                  title: 'Oops...',
-                  text: 'Something went wrong!',
-                  footer: '<a href>Why do I have this issue?</a>'
-                })
                 axios.post('api/savePayment', {dataI})
                 .then( res => {
                     $('#invoice').modal('hide');
                     Swal.fire(
                               'Updated!',
-                              'Item has been updated',
+                              'Payment has been updated',
                               'success'
                             )
                     console.log(res)
@@ -248,6 +245,7 @@ $( function() {
           searchit(){
                 Fire.$emit('searching');
               },
+          
 
           /* loadinvoice(id){
               axios.get("api/loadinvoice/"+id).then(({ data }) =>(this.invoices = data.data));
@@ -268,6 +266,8 @@ $( function() {
            })
             this.lordcustomer()
         },
+
+        
         
             
             

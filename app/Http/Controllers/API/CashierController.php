@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\postdated_cheques;
+use DB;
 
 class CashierController extends Controller
 {
@@ -69,6 +70,7 @@ class CashierController extends Controller
     {
         //
     }
+    
 
     /**
      * Remove the specified resource from storage.

@@ -20,6 +20,7 @@ class CreateCustomersTable extends Migration
             $table->string('No');
             $table->string('City');
             $table->string('Street');
+            $table->string('email');
             $table->string('NicNo');
             $table->timestamps();
         });
